@@ -1,5 +1,3 @@
 # Shrift
 
-====
-
 under developing...
