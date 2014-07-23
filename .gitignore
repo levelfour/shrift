@@ -1,3 +1,4 @@
 *.txt
 *_bin.*
 *.png
+*.pyc
