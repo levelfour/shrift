@@ -1,5 +1,5 @@
 *.txt
 *_bin.*
 *.png
+*.jpg
 *.pyc
-/server/file/**

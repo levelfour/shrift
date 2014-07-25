@@ -33,13 +33,9 @@ class MultiPartForm(object):
 
 	def __str__(self):
 		"""Return a string representing the form data, including attached files."""
-		# リクエストの "行" を含むリストを作成する
-		# それぞれのパートはバウンダリ文字列で分割される
-		# リストが作成されると '\r\n' で区切られた行を返す
 		parts = []
 		part_boundary = '--' + self.boundary
 
-		# フォームフィールドを追加する
 		parts.extend(
 				[ part_boundary,
 					'Content-Disposition: form-data; name="%s"' % name,
@@ -47,7 +43,6 @@ class MultiPartForm(object):
 					value,
 				] for name, value in self.form_fields)
 
-		# アップロードするファイルを追加する
 		parts.extend(
 				[ part_boundary,
 					'Content-Disposition: file; name="%s"; filename="%s"' % (field_name, filename),
@@ -56,8 +51,6 @@ class MultiPartForm(object):
 					body,
 				] for field_name, filename, content_type, body in self.files)
 
-		# リストにしてバウンダリ文字列をクローズするマーカーを
-		# 追加してから CR+LF で分割されたデータを返す
 		flattened = list(itertools.chain(*parts))
 		flattened.append('--' + self.boundary + '--')
 		flattened.append('')
@@ -70,17 +63,13 @@ if __name__ == '__main__':
 	url = sys.argv[1]
 	fpath = sys.argv[2]
 
-	form = MultiPartForm()
-	form.add_file('file', fpath)
-	request = urllib2.Request(url)
-	request.add_header('Content-type', form.get_content_type())
-	request.add_data(str(form))
+	with open(fpath, 'r+b') as f:
+		form = MultiPartForm()
+		form.add_file('file', fpath, f)
+		request = urllib2.Request(url)
+		request.add_header('Content-type', form.get_content_type())
+		request.add_data(str(form))
 
-	print "---------- POST DATA ----------"
-	print str(form)
-
-	response = urllib2.urlopen(request)
-	print "---------- RESPONSE HEAD ----------"
-	print response.info()
-	print "---------- RESPONSE BODY ----------"
-	print response.read()
+		response = urllib2.urlopen(request)
+		print "---------- RESPONSE HEAD ----------"
+		print response.info()
