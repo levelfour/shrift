@@ -2,3 +2,4 @@
 *_bin.*
 *.png
 *.pyc
+/server/file/**
