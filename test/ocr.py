@@ -73,3 +73,5 @@ if __name__ == '__main__':
 		response = urllib2.urlopen(request)
 		print "---------- RESPONSE HEAD ----------"
 		print response.info()
+		print "---------- RESPONSE BODY ----------"
+		print response.read()

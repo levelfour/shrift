@@ -1,23 +1,26 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys, re
+import os, sys, re
 from PIL import Image
 import pyocr
 import pyocr.builders
 
-if __name__ == "__main__":
-	if len(sys.argv) < 2:
-		raise RuntimeError('too few args')
+def ocr(filename):
+	fpath = os.path.join(
+			os.path.abspath(os.path.dirname(__file__)),
+			'file',
+			filename)
+	return recognize(fpath)
 
-	srcname = sys.argv[1]
+def recognize(filename):
 	re_ext = r'(.[A-Za-z]+)$'
 	r = re.compile(re_ext)
-	ext = r.search(srcname).group(0)
-	binname = re.sub(re_ext, '_bin'+ext, srcname)
+	ext = r.search(filename).group(0)
+	binname = re.sub(re_ext, '_bin'+ext, filename)
 
 	# 画像をグレースケールで読み込む
-	src_image = Image.open(srcname).convert("L")
+	src_image = Image.open(filename).convert("L")
 
 	# グレースケール画像を2値化
 	bin_image = src_image.point(
@@ -35,4 +38,11 @@ if __name__ == "__main__":
 			Image.open(binname),
 			lang=lang,
 			builder=pyocr.builders.TextBuilder())
-	print txt
+	return txt
+
+if __name__ == "__main__":
+	if len(sys.argv) < 2:
+		raise RuntimeError('too few args')
+
+	srcname = sys.argv[1]
+	print ocr(srcname)
