@@ -11,6 +11,7 @@ ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.url_map.strict_slashes = False
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -27,13 +28,8 @@ def upload_file():
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
 			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			return redirect(url_for('ocr',
-				filename=filename))
-
-@app.route('/ocr/<filename>')
-def ocr(filename):
-	import shrift
-	return shrift.ocr(secure_filename(filename))
+			import shrift
+			return shrift.ocr(secure_filename(filename))
 
 if __name__ == '__main__':
 	app.run(debug=True)
