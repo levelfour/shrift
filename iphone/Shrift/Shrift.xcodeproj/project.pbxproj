@@ -1,0 +1,410 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		554FF904198541510072D9E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554FF903198541510072D9E9 /* AppDelegate.swift */; };
+		554FF906198541510072D9E9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554FF905198541510072D9E9 /* ViewController.swift */; };
+		554FF909198541510072D9E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 554FF907198541510072D9E9 /* Main.storyboard */; };
+		554FF90B198541510072D9E9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 554FF90A198541510072D9E9 /* Images.xcassets */; };
+		554FF917198541510072D9E9 /* ShriftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554FF916198541510072D9E9 /* ShriftTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		554FF911198541510072D9E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 554FF8F6198541510072D9E9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 554FF8FD198541510072D9E9;
+			remoteInfo = Shrift;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		554FF8FE198541510072D9E9 /* Shrift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shrift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		554FF902198541510072D9E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		554FF903198541510072D9E9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		554FF905198541510072D9E9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		554FF908198541510072D9E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		554FF90A198541510072D9E9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		554FF910198541510072D9E9 /* ShriftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShriftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		554FF915198541510072D9E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		554FF916198541510072D9E9 /* ShriftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShriftTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		554FF8FB198541510072D9E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554FF90D198541510072D9E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		554FF8F5198541510072D9E9 = {
+			isa = PBXGroup;
+			children = (
+				554FF900198541510072D9E9 /* Shrift */,
+				554FF913198541510072D9E9 /* ShriftTests */,
+				554FF8FF198541510072D9E9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		554FF8FF198541510072D9E9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				554FF8FE198541510072D9E9 /* Shrift.app */,
+				554FF910198541510072D9E9 /* ShriftTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		554FF900198541510072D9E9 /* Shrift */ = {
+			isa = PBXGroup;
+			children = (
+				554FF903198541510072D9E9 /* AppDelegate.swift */,
+				554FF905198541510072D9E9 /* ViewController.swift */,
+				554FF907198541510072D9E9 /* Main.storyboard */,
+				554FF90A198541510072D9E9 /* Images.xcassets */,
+				554FF901198541510072D9E9 /* Supporting Files */,
+			);
+			path = Shrift;
+			sourceTree = "<group>";
+		};
+		554FF901198541510072D9E9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				554FF902198541510072D9E9 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		554FF913198541510072D9E9 /* ShriftTests */ = {
+			isa = PBXGroup;
+			children = (
+				554FF916198541510072D9E9 /* ShriftTests.swift */,
+				554FF914198541510072D9E9 /* Supporting Files */,
+			);
+			path = ShriftTests;
+			sourceTree = "<group>";
+		};
+		554FF914198541510072D9E9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				554FF915198541510072D9E9 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		554FF8FD198541510072D9E9 /* Shrift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 554FF91A198541510072D9E9 /* Build configuration list for PBXNativeTarget "Shrift" */;
+			buildPhases = (
+				554FF8FA198541510072D9E9 /* Sources */,
+				554FF8FB198541510072D9E9 /* Frameworks */,
+				554FF8FC198541510072D9E9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Shrift;
+			productName = Shrift;
+			productReference = 554FF8FE198541510072D9E9 /* Shrift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		554FF90F198541510072D9E9 /* ShriftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 554FF91D198541510072D9E9 /* Build configuration list for PBXNativeTarget "ShriftTests" */;
+			buildPhases = (
+				554FF90C198541510072D9E9 /* Sources */,
+				554FF90D198541510072D9E9 /* Frameworks */,
+				554FF90E198541510072D9E9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				554FF912198541510072D9E9 /* PBXTargetDependency */,
+			);
+			name = ShriftTests;
+			productName = ShriftTests;
+			productReference = 554FF910198541510072D9E9 /* ShriftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		554FF8F6198541510072D9E9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "***";
+				TargetAttributes = {
+					554FF8FD198541510072D9E9 = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					554FF90F198541510072D9E9 = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = 554FF8FD198541510072D9E9;
+					};
+				};
+			};
+			buildConfigurationList = 554FF8F9198541510072D9E9 /* Build configuration list for PBXProject "Shrift" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 554FF8F5198541510072D9E9;
+			productRefGroup = 554FF8FF198541510072D9E9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				554FF8FD198541510072D9E9 /* Shrift */,
+				554FF90F198541510072D9E9 /* ShriftTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		554FF8FC198541510072D9E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				554FF909198541510072D9E9 /* Main.storyboard in Resources */,
+				554FF90B198541510072D9E9 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554FF90E198541510072D9E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		554FF8FA198541510072D9E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				554FF906198541510072D9E9 /* ViewController.swift in Sources */,
+				554FF904198541510072D9E9 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		554FF90C198541510072D9E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				554FF917198541510072D9E9 /* ShriftTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		554FF912198541510072D9E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 554FF8FD198541510072D9E9 /* Shrift */;
+			targetProxy = 554FF911198541510072D9E9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		554FF907198541510072D9E9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				554FF908198541510072D9E9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		554FF918198541510072D9E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		554FF919198541510072D9E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		554FF91B198541510072D9E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = Shrift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		554FF91C198541510072D9E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = Shrift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		554FF91E198541510072D9E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Shrift.app/Shrift";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ShriftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		554FF91F198541510072D9E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Shrift.app/Shrift";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ShriftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		554FF8F9198541510072D9E9 /* Build configuration list for PBXProject "Shrift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554FF918198541510072D9E9 /* Debug */,
+				554FF919198541510072D9E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		554FF91A198541510072D9E9 /* Build configuration list for PBXNativeTarget "Shrift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554FF91B198541510072D9E9 /* Debug */,
+				554FF91C198541510072D9E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		554FF91D198541510072D9E9 /* Build configuration list for PBXNativeTarget "ShriftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554FF91E198541510072D9E9 /* Debug */,
+				554FF91F198541510072D9E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 554FF8F6198541510072D9E9 /* Project object */;
+}
