@@ -25,7 +25,8 @@ class ViewController: UIViewController {
 		
 		let spaceBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: self, action: nil)
 		let trashBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: "clearCanvas")
-		let items: NSMutableArray = NSMutableArray(array: [spaceBtn, trashBtn])
+		let cameraBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Camera, target: self, action: "saveImage")
+		let items: NSMutableArray = NSMutableArray(array: [cameraBtn, spaceBtn, trashBtn])
 		toolbar.setItems(items, animated: false)
 	}
 
@@ -36,6 +37,10 @@ class ViewController: UIViewController {
 	
 	func clearCanvas() {
 		canvas.image = nil
+	}
+	
+	func saveImage() {
+		UIImageWriteToSavedPhotosAlbum(canvas.image, nil, nil, nil)
 	}
 
 	override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
