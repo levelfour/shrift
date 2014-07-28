@@ -9,20 +9,33 @@
 import UIKit
 
 class ViewController: UIViewController {
+	var toolbar: UIToolbar!
 	var canvas: UIImageView!
 	var touchPoint: CGPoint!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		canvas = UIImageView(frame: UIScreen.mainScreen().bounds)
+		toolbar = UIToolbar(frame: CGRect(x: 0, y: UIApplication.sharedApplication().statusBarFrame.size.height, width: UIScreen.mainScreen().bounds.width, height: 44))
+		self.view.addSubview(toolbar)
+		
+		canvas = UIImageView(frame: CGRect(x: 0, y: toolbar.frame.origin.y+toolbar.frame.height, width: UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.height - toolbar.bounds.height))
 		canvas.backgroundColor = UIColor.whiteColor()
 		self.view.addSubview(canvas)
+		
+		let spaceBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: self, action: nil)
+		let trashBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: "clearCanvas")
+		let items: NSMutableArray = NSMutableArray(array: [spaceBtn, trashBtn])
+		toolbar.setItems(items, animated: false)
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
+	}
+	
+	func clearCanvas() {
+		canvas.image = nil
 	}
 
 	override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {

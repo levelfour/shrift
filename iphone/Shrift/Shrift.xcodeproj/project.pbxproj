@@ -29,6 +29,13 @@
 			remoteGlobalIDString = 554FF8FD198541510072D9E9;
 			remoteInfo = Shrift;
 		};
+		554FF922198543570072D9E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 554FF8F6198541510072D9E9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 554FF8FD198541510072D9E9;
+			remoteInfo = Shrift;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -149,6 +156,7 @@
 			dependencies = (
 				554FF912198541510072D9E9 /* PBXTargetDependency */,
 				554FF921198543570072D9E9 /* PBXTargetDependency */,
+				554FF923198543570072D9E9 /* PBXTargetDependency */,
 			);
 			name = ShriftTests;
 			productName = ShriftTests;
@@ -241,6 +249,11 @@
 			isa = PBXTargetDependency;
 			target = 554FF8FD198541510072D9E9 /* Shrift */;
 			targetProxy = 554FF920198543570072D9E9 /* PBXContainerItemProxy */;
+		};
+		554FF923198543570072D9E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 554FF8FD198541510072D9E9 /* Shrift */;
+			targetProxy = 554FF922198543570072D9E9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -341,6 +354,7 @@
 				INFOPLIST_FILE = Shrift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -352,6 +366,7 @@
 				INFOPLIST_FILE = Shrift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
