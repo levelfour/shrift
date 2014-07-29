@@ -1,5 +1,11 @@
 DirectoryIndex shrift.wsgi
 
+<FilesMatch "clear">
+	Order deny,allow
+	Deny from all
+	Allow from 127.0.0.1
+</FilesMatch>
+
 IndexIgnore */*
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
