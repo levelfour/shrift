@@ -9,6 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+	let SERVER_URL = "http://localhost:5000/upload"
 	var toolbar: UIToolbar!
 	var canvas: UIImageView!
 	var touchPoint: CGPoint!
@@ -62,7 +63,7 @@ class ViewController: UIViewController {
 	}
 	
 	func requestWithImageFile(filename: NSString) {
-		let url = NSURL(string: "http://tsg.ne.jp/levelfour/shrift/upload")
+		let url = NSURL(string: SERVER_URL)
 		let boundary = NSString(format: "%d", arc4random() % 10000000)
 		let config = NSURLSessionConfiguration.defaultSessionConfiguration()
 		config.HTTPAdditionalHeaders = ["Content-Type": NSString(format: "multipart/form-data; boundary=%@", boundary)]
@@ -94,7 +95,6 @@ class ViewController: UIViewController {
 	
 	func recognize() {
 		let filename: NSString = saveImage()
-		println(filename)
 		requestWithImageFile(filename)
 	}
 
