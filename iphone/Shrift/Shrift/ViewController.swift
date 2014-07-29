@@ -25,8 +25,9 @@ class ViewController: UIViewController {
 		
 		let spaceBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: self, action: nil)
 		let trashBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: "clearCanvas")
-		let cameraBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Camera, target: self, action: "saveImage")
-		let items: NSMutableArray = NSMutableArray(array: [cameraBtn, spaceBtn, trashBtn])
+		let cameraBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Camera, target: self, action: "saveImageToAlbum")
+		let actionBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "recognize")
+		let items: NSMutableArray = NSMutableArray(array: [cameraBtn, actionBtn, spaceBtn, trashBtn])
 		toolbar.setItems(items, animated: false)
 	}
 
@@ -39,8 +40,62 @@ class ViewController: UIViewController {
 		canvas.image = nil
 	}
 	
-	func saveImage() {
+	func saveImageToAlbum() {
 		UIImageWriteToSavedPhotosAlbum(canvas.image, nil, nil, nil)
+	}
+	
+	func saveImage() -> NSString {
+		// save to /Application/Document
+		let image = UIImageJPEGRepresentation(canvas.image, 1.0)
+		let path: NSString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString
+		
+		// save image with current time as name
+		let now = NSDate()
+		let dateFormatter = NSDateFormatter()
+		dateFormatter.locale = NSLocale(localeIdentifier: "ja_JP")
+		dateFormatter.dateFormat = "yyyy_MM_dd_HH_mm_ss"
+	
+		let fullpath = path.stringByAppendingPathComponent(dateFormatter.stringFromDate(now).stringByAppendingString(".jpg"))
+		image?.writeToFile(fullpath, atomically: true)
+		
+		return fullpath
+	}
+	
+	func requestWithImageFile(filename: NSString) {
+		let url = NSURL(string: "http://tsg.ne.jp/levelfour/shrift/upload")
+		let boundary = NSString(format: "%d", arc4random() % 10000000)
+		let config = NSURLSessionConfiguration.defaultSessionConfiguration()
+		config.HTTPAdditionalHeaders = ["Content-Type": NSString(format: "multipart/form-data; boundary=%@", boundary)]
+		var request = NSMutableURLRequest(URL: url)
+		let session = NSURLSession(configuration: config)
+		
+		let image = NSData(contentsOfFile: filename)
+		
+		if image != nil {
+			let post = NSMutableData.data()
+			post.appendData(NSString(format: "--%@\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(string: "Content-Disposition: form-data;").dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(format: "name=\"%@\";", "file").dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(format: "filename=\"%@\"\r\n", filename).dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(string: "Content-Type: image/jpeg\r\n\r\n").dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(image)
+			post.appendData(NSString(string: "\r\n").dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(format: "--%@--\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding))
+		
+			request.HTTPMethod = "POST"
+			request.HTTPBody = post
+			let task: NSURLSessionDataTask = session.dataTaskWithRequest(request, completionHandler: { data, request, error in println(NSString(format: "<result=\"%@\">", NSString(data: data, encoding: NSUTF8StringEncoding))) })
+			task.resume()
+		} else {
+			let alert = UIAlertView(title: "Alert", message: "draw something in canvas first", delegate: self, cancelButtonTitle: "OK")
+			alert.show()
+		}
+	}
+	
+	func recognize() {
+		let filename: NSString = saveImage()
+		println(filename)
+		requestWithImageFile(filename)
 	}
 
 	override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
