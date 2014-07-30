@@ -7,3 +7,4 @@
 !/**/*.xcodeproj/project.pbxproj
 !/**/*.xcworkspace/contents.xcworkspacedata
 .DS_Store
+/server/data
