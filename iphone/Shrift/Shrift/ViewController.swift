@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-	let SERVER_URL = "http://localhost:5000/upload"
+	let SERVER_URL = "http://localhost:5000/ocr"
 	var toolbar: UIToolbar!
 	var canvas: UIImageView!
 	var touchPoint: CGPoint!

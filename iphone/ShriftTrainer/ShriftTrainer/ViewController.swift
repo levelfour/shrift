@@ -91,7 +91,7 @@ class ViewController: UIViewController {
 		return fullpath
 	}
 	
-	func requestWithImageFile(filename: NSString) {
+	func requestWithImageFile(filename: NSString, text: String) {
 		let url = NSURL(string: SERVER_URL)
 		let boundary = NSString(format: "%d", arc4random() % 10000000)
 		let config = NSURLSessionConfiguration.defaultSessionConfiguration()
@@ -110,6 +110,13 @@ class ViewController: UIViewController {
 			post.appendData(NSString(string: "Content-Type: image/jpeg\r\n\r\n").dataUsingEncoding(NSUTF8StringEncoding))
 			post.appendData(image)
 			post.appendData(NSString(string: "\r\n").dataUsingEncoding(NSUTF8StringEncoding))
+			
+			post.appendData(NSString(format: "--%@\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(string: "Content-Disposition: form-data;").dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(format: "name=\"%@\"\r\n\r\n", "text").dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(string: text).dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(string: "\r\n").dataUsingEncoding(NSUTF8StringEncoding))
+			
 			post.appendData(NSString(format: "--%@--\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding))
 			
 			request.HTTPMethod = "POST"
@@ -122,9 +129,22 @@ class ViewController: UIViewController {
 		}
 	}
 	
+	func getText() -> String? {
+		if textbox.text == "" {
+			let alert = UIAlertView(title: "Alert", message: "input char to text field", delegate: self, cancelButtonTitle: "OK")
+			alert.show()
+			return nil
+		} else {
+			return textbox.text
+		}
+	}
+	
 	func recognize() {
 		let filename: NSString = saveImage()
-		requestWithImageFile(filename)
+		let char: String? = getText()
+		if let text = char? {
+			requestWithImageFile(filename, text: text)
+		}
 	}
 	
 	override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
