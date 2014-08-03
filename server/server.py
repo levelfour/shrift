@@ -28,10 +28,12 @@ def upload_file():
 def upload_train_data():
 	if request.method == 'POST':
 		file = request.files['file']
-		char = request.form['text']
-		global fs
-		fs.put(file.read(), text=char)
-		return 'OK'
+		if file and allowed_file(file.filename):
+			name = secure_filename(file.filename)
+			char = request.form['text']
+			global fs
+			fs.put(file, filename=name, text=char)
+			return 'OK'
 
 @app.route('/clear')
 def clear():

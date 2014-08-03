@@ -92,7 +92,7 @@ class ViewController: UIViewController {
 		return fullpath
 	}
 	
-	func requestWithImageFile(filename: NSString, text: String) {
+	func requestWithImageFile(filepath: NSString, text: String) {
 		let url = NSURL(string: SERVER_URL)
 		let boundary = NSString(format: "%d", arc4random() % 10000000)
 		let config = NSURLSessionConfiguration.defaultSessionConfiguration()
@@ -100,14 +100,14 @@ class ViewController: UIViewController {
 		var request = NSMutableURLRequest(URL: url)
 		let session = NSURLSession(configuration: config)
 		
-		let image = NSData(contentsOfFile: filename)
+		let image = NSData(contentsOfFile: filepath)
 		
 		if image != nil {
 			let post = NSMutableData.data()
 			post.appendData(NSString(format: "--%@\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding))
 			post.appendData(NSString(string: "Content-Disposition: form-data;").dataUsingEncoding(NSUTF8StringEncoding))
 			post.appendData(NSString(format: "name=\"%@\";", "file").dataUsingEncoding(NSUTF8StringEncoding))
-			post.appendData(NSString(format: "filename=\"%@\"\r\n", filename).dataUsingEncoding(NSUTF8StringEncoding))
+			post.appendData(NSString(format: "filename=\"%@.jpg\"\r\n", text).dataUsingEncoding(NSUTF8StringEncoding))
 			post.appendData(NSString(string: "Content-Type: image/jpeg\r\n\r\n").dataUsingEncoding(NSUTF8StringEncoding))
 			post.appendData(image)
 			post.appendData(NSString(string: "\r\n").dataUsingEncoding(NSUTF8StringEncoding))
