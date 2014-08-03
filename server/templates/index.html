@@ -4,7 +4,10 @@
     <meta charset=utf-8 />
     <title>Shrift OCR Engine</title>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
@@ -99,7 +102,7 @@
               <div class="hiragana col-md-2"><a href="/data/n">ん</a></div>
             </div>
           <li class="sidebar-brand">
-          <a href="#">
+          <a href="/download">
             Download
           </a>
           </li>

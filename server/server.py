@@ -38,6 +38,15 @@ def image_data(hashv):
 	response.headers['Content-Disposition'] = 'attachment; filename={}.jpg'.format(hashv)
 	return response
 
+@app.route('/download/', methods=['GET'])
+def make_train_data():
+	return render_template('index.html', body="""
+	<h3>Generating train data...</h3>
+	<div id="progress">
+		<div id="loading"></div>
+	</div>
+	""")
+
 # recognize characters and return response
 @app.route('/ocr', methods=['POST'])
 def upload_file():

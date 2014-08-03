@@ -1,14 +1,26 @@
 body {
 	padding-top: 40px
 }
+
 .wrapper {
 	padding-top: 40px;
 	padding-left: 230px;
 }
+
 .sidebar-nav .row {
 	margin: 0;
 }
+
 .hiragana {
 	font-family: "HiraMaruProN-W4";
 	font-size: 20px;
+}
+
+div#progress {
+	position: relative;
+}
+
+div#loading {
+	position: absolute;
+	left: 50%;
 }
