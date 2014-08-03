@@ -36,7 +36,7 @@ class ViewController: UIViewController {
 		let title = UIBarButtonItem(customView: titleLabel)
 		let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: self, action: nil)
 		let trashBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action: "clearCanvas")
-		let actionBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "recognize")
+		let actionBtn = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "sendToServer")
 		let items: NSMutableArray = NSMutableArray(array: [actionBtn, spacer, title, spacer, trashBtn])
 		toolbar.setItems(items, animated: false)
 		
@@ -61,7 +61,7 @@ class ViewController: UIViewController {
 		submitBtn.layer.borderColor = UIColor.grayColor().CGColor
 		submitBtn.layer.borderWidth = 2.0
 		submitBtn.layer.cornerRadius = 7.5
-		submitBtn.addTarget(self, action: "recognize", forControlEvents: UIControlEvents.TouchUpInside)
+		submitBtn.addTarget(self, action: "sendToServer", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(submitBtn)
 	}
 	
@@ -140,11 +140,12 @@ class ViewController: UIViewController {
 		}
 	}
 	
-	func recognize() {
+	func sendToServer() {
 		let filename: NSString = saveImage()
 		let char: String? = getText()
 		if let text = char? {
 			requestWithImageFile(filename, text: text)
+			clearCanvas()
 		}
 	}
 	
