@@ -3,7 +3,10 @@ body {
 }
 .wrapper {
 	padding-top: 40px;
-	padding-left: 250px;
+	padding-left: 230px;
+}
+.sidebar-nav .row {
+	margin: 0;
 }
 .hiragana {
 	font-family: "HiraMaruProN-W4";
