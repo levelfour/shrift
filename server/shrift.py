@@ -1,10 +1,71 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os, sys, re
+from config import *
+import os, sys, re, datetime
+import io
 from PIL import Image
 import pyocr
 import pyocr.builders
+import numpy as np
+from sklearn import datasets
+
+SVMLIGHT_OUTPUT_PATH = os.path.join(os.path.dirname(__file__), 'data')
+
+label = [
+	'a', 'i', 'u', 'e', 'o',
+	'ka', 'ki', 'ku', 'ke', 'ko',
+	'sa', 'si', 'su', 'se', 'so',
+	'ta', 'ti', 'tu', 'te', 'to',
+	'na', 'ni', 'nu', 'ne', 'no',
+	'ha', 'hi', 'hu', 'he', 'ho',
+	'ma', 'mi', 'mu', 'me', 'mo',
+	'ya', 'yu', 'yo',
+	'ra', 'ri', 'ru', 're', 'ro',
+	'wa', 'wo', 'n'
+]
+
+# 手書き文字1文字から特徴ベクトルを生成する
+# Algorithm:
+#	ShriftTrainerは400*400の画像を返すので、グレースケール化して
+#	40*40の小区画の平均をとり、100次元の特徴ベクトルとする
+# Vector: 10*10の100次元濃淡ベクトル
+# Class: 各文字と一対一対応した整数値
+def extract(raw_str):
+	img = Image.open(io.BytesIO(raw_str)).convert('L')
+	# グレースケール化した画像を行列にする
+	# 白成分が多いので白黒を反転させる
+	imarray = np.asarray(img.point(lambda x: 255 - x))
+	# 各区画の濃淡の平均をとり特徴ベクトルとする
+	return np.array([
+		[imarray[40*i:40*(i+1),40*j:40*(j+1)].mean()
+			for i in range(0, 10)
+			for j in range(0, 10)
+		]])
+
+# データベースに格納されているtrain-dataから
+# 学習用の特徴ベクトルを生成してsvmlight-formatで出力する
+def generate_train_data():
+	global fs, label
+	data = None	# 特徴ベクトル
+	target = []	# train-dataのクラス
+	for f in fs.find():
+		char, ext = os.path.splitext(f.filename)
+		v = extract(f.read())
+		if data != None:
+			data = np.r_[data, v]
+		else:
+			data = v
+		target.append(char)
+
+	target = map(lambda x: label.index(x), target)
+	now = datetime.datetime.today()
+	filename = os.path.join(
+			SVMLIGHT_OUTPUT_PATH,
+			'feature_{}{:0>2}{:0>2}{:0>2}{:0>2}.txt'.format(
+				now.year, now.month, now.day, now.hour, now.minute))
+	with open(filename, 'w') as f:
+		datasets.dump_svmlight_file(data, target, f)
 
 def ocr(filename):
 	fpath = os.path.join(

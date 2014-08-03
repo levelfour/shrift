@@ -14,6 +14,7 @@ def index():
 	<h1>Shrift OCR Engine Database</h1>
 	""")
 
+# display stored train data
 @app.route('/data/<char>', methods=['GET'])
 def show_data(char):
 	import romkan
@@ -29,6 +30,7 @@ def show_data(char):
 	<h1>Train Data for "{}"</h1>{}
 	""".format(romkan.to_hiragana(char).encode('utf-8'), html), encoding='utf-8'))
 
+# access to image by hash value(md5)
 @app.route('/image/<hashv>', methods=['GET'])
 def image_data(hashv):
 	global fs
@@ -40,6 +42,8 @@ def image_data(hashv):
 
 @app.route('/download/', methods=['GET'])
 def make_train_data():
+	import shrift
+	shrift.generate_train_data()
 	return render_template('index.html', body="""
 	<h3>Generating train data...</h3>
 	<div id="progress">
