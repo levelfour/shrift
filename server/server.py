@@ -16,9 +16,11 @@ def index():
 
 @app.route('/data/<char>', methods=['GET'])
 def show_data(char):
-	return render_template('index.html', body="""
-	{}
-	""".format(char))
+	global fs
+	html = ""
+	for f in fs.find({'filename': '{}.jpg'.format(char)}):
+		html += "<img src='/image/{}' width=80 />".format(f.md5)
+	return render_template('index.html', body=html)
 
 @app.route('/image/<hashv>', methods=['GET'])
 def image_data(hashv):
