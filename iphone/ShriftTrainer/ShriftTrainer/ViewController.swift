@@ -125,15 +125,13 @@ class ViewController: UIViewController {
 			let task: NSURLSessionDataTask = session.dataTaskWithRequest(request, completionHandler: { data, request, error in println(NSString(format: "<result=\"%@\">", NSString(data: data, encoding: NSUTF8StringEncoding))) })
 			task.resume()
 		} else {
-			let alert = UIAlertView(title: "Alert", message: "draw something in canvas first", delegate: self, cancelButtonTitle: "OK")
-			alert.show()
+			showAlert("draw something in canvas")
 		}
 	}
 	
 	func getText() -> String? {
 		if textbox.text == "" {
-			let alert = UIAlertView(title: "Alert", message: "input char to text field", delegate: self, cancelButtonTitle: "OK")
-			alert.show()
+			showAlert("input text box")
 			return nil
 		} else {
 			return textbox.text
@@ -147,6 +145,13 @@ class ViewController: UIViewController {
 			requestWithImageFile(filename, text: text)
 			clearCanvas()
 		}
+	}
+	
+	func showAlert(message: NSString) {
+		let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .Alert)
+		let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+		alert.addAction(cancelAction)
+		self.presentViewController(alert, animated: true, completion: nil)
 	}
 	
 	override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {

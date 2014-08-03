@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55892A33198E56C10041691B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5590BFDF198D531A00CB76FB /* ViewController.swift */; };
 		5590BFDE198D531A00CB76FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5590BFDD198D531A00CB76FB /* AppDelegate.swift */; };
 		5590BFE0198D531A00CB76FB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5590BFDF198D531A00CB76FB /* ViewController.swift */; };
 		5590BFE3198D531A00CB76FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5590BFE1198D531A00CB76FB /* Main.storyboard */; };
@@ -221,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55892A33198E56C10041691B /* ViewController.swift in Sources */,
 				5590BFF1198D531A00CB76FB /* ShriftTrainerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -401,6 +403,7 @@
 				5590BFF6198D531A00CB76FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5590BFF7198D531A00CB76FB /* Build configuration list for PBXNativeTarget "ShriftTrainerTests" */ = {
 			isa = XCConfigurationList;
@@ -409,6 +412,7 @@
 				5590BFF9198D531A00CB76FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
