@@ -55,7 +55,10 @@
     width: 250px;
     margin: 0;
     padding: 0;
+	padding-top: 40px;
+	padding-left: 20px;
     list-style: none;
+    color: #fff;
 }
 
 .sidebar-nav li {

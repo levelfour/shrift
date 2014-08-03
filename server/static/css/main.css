@@ -5,3 +5,7 @@ body {
 	padding-top: 40px;
 	padding-left: 250px;
 }
+.hiragana {
+	font-family: "HiraMaruProN-W4";
+	font-size: 20px;
+}

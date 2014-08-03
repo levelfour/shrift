@@ -10,7 +10,9 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-	return render_template('index.html')
+	return render_template('index.html', body="""
+	<h1>Shrift OCR Engine Database</h1>
+	""")
 
 # recognize characters and return response
 @app.route('/ocr', methods=['POST'])
