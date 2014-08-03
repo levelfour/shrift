@@ -10,7 +10,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-	return 'Shrift'
+	return render_template('index.html')
 
 # recognize characters and return response
 @app.route('/ocr', methods=['POST'])

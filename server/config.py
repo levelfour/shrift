@@ -6,6 +6,7 @@ import os
 # Flask
 from flask import Flask, request, redirect, url_for
 from flask import send_from_directory
+from flask import render_template
 from werkzeug.utils import secure_filename
 
 UPLOAD_DIR = os.path.abspath(os.path.dirname(__file__)) + '/file'
