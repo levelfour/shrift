@@ -72,6 +72,7 @@ class ViewController: UIViewController {
 	
 	func clearCanvas() {
 		canvas.image = nil
+		textbox.text = ""
 	}
 	
 	func saveImage() -> NSString {

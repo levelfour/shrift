@@ -2,19 +2,7 @@
 # coding: utf-8
 
 import os
-from flask import Flask, request, redirect, url_for
-from flask import send_from_directory
-from werkzeug.utils import secure_filename
-
-UPLOAD_DIR = os.path.abspath(os.path.dirname(__file__)) + '/file'
-TRAIN_DATA_DIR = os.path.abspath(os.path.dirname(__file__)) + '/file/data/train-data'
-ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])
-
-app = Flask(__name__)
-app.config['UPLOAD_DIR'] = UPLOAD_DIR
-app.config['TRAIN_DATA_DIR'] = TRAIN_DATA_DIR
-app.url_map.strict_slashes = False
-app.debug = True
+from config import *
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -41,10 +29,9 @@ def upload_train_data():
 	if request.method == 'POST':
 		file = request.files['file']
 		char = request.form['text']
-		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			#file.save(os.path.join(app.config['TRAIN_DATA_DIR'], filename))
-			return "{} : {}".format(char, filename)
+		global fs
+		fs.put(file.read(), text=char)
+		return 'OK'
 
 @app.route('/clear')
 def clear():
