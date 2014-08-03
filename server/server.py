@@ -16,11 +16,18 @@ def index():
 
 @app.route('/data/<char>', methods=['GET'])
 def show_data(char):
+	import romkan
 	global fs
 	html = ""
 	for f in fs.find({'filename': '{}.jpg'.format(char)}):
 		html += "<img src='/image/{}' width=80 />".format(f.md5)
-	return render_template('index.html', body=html)
+	
+	if html == "":
+		html = "<h2>no data...</h2>"
+
+	return render_template('index.html', body=unicode("""
+	<h1>Train Data for "{}"</h1>{}
+	""".format(romkan.to_hiragana(char).encode('utf-8'), html), encoding='utf-8'))
 
 @app.route('/image/<hashv>', methods=['GET'])
 def image_data(hashv):
