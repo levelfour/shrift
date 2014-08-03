@@ -14,6 +14,21 @@ def index():
 	<h1>Shrift OCR Engine Database</h1>
 	""")
 
+@app.route('/data/<char>', methods=['GET'])
+def show_data(char):
+	return render_template('index.html', body="""
+	{}
+	""".format(char))
+
+@app.route('/image/<hashv>', methods=['GET'])
+def image_data(hashv):
+	global fs
+	objectid = fs.find({'md5': hashv})[0]._id
+	response = make_response(fs.get(objectid).read())
+	response.headers['Content-Type'] = 'image/jpeg'
+	response.headers['Content-Disposition'] = 'attachment; filename={}.jpg'.format(hashv)
+	return response
+
 # recognize characters and return response
 @app.route('/ocr', methods=['POST'])
 def upload_file():
