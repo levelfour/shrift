@@ -33,6 +33,7 @@ label = [
 # Class: 各文字と一対一対応した整数値
 def extract(raw_str):
 	img = Image.open(io.BytesIO(raw_str)).convert('L')
+	img = img.resize((400, 400))
 	# グレースケール化した画像を行列にする
 	# 白成分が多いので白黒を反転させる
 	imarray = np.asarray(img.point(lambda x: 255 - x))
