@@ -24,3 +24,12 @@ div#loading {
 	position: absolute;
 	left: 50%;
 }
+
+#delete_button {
+	margin-top: 50px;
+	font-size: 3rem;
+}
+
+#delete_button:active {
+	background: #00f;
+}

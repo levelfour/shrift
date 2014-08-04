@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import os
+import socket
 from config import *
 
 def allowed_file(filename):
@@ -51,6 +52,17 @@ def make_train_data():
 	</div>
 	""")
 
+@app.route('/add', methods=['GET'])
+def make_canvas():
+	return render_template('index.html', body="""
+	<h3>draw character in canvas</h3>
+	<canvas id="canvas" width=400 height=400 style="border: solid">
+	</canvas> 
+	<div>
+		<button class="btn-info" id="delete_button">Clear</button>
+	</div>
+	""")
+
 # recognize characters and return response
 @app.route('/ocr', methods=['POST'])
 def upload_file():
@@ -85,4 +97,4 @@ def clear():
 	return result 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True, host=socket.gethostbyname(socket.gethostname()))
