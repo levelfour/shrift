@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os
+import os, re, base64
 import socket
 from config import *
 
@@ -58,15 +58,20 @@ def make_canvas():
 	<h3>draw character in canvas</h3>
 	<canvas id="canvas" width=400 height=400 style="border: solid">
 	</canvas> 
-	<div>
-		<button class="btn-info" id="delete_button">Clear</button>
-	</div>
+	<form id="canvas-form" action="/upload" method="post" encrypt="multipart/form-data">
+		<div>
+			<input id="text" type="text" name="text" placeHolder="target character" />
+		</div>
+		<button class="canvas btn-info" type="submit" id="send">Send</button>
+		<button class="canvas btn-warning" id="delete">Clear</button>
+	</form>
 	""")
 
 # recognize characters and return response
 @app.route('/ocr', methods=['POST'])
 def upload_file():
 	if request.method == 'POST':
+		return text(request.files)
 		file = request.files['file']
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)

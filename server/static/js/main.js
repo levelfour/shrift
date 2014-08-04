@@ -17,7 +17,7 @@ $(function() {
 			return {x:mouseX, y:mouseY};
 		}
 		context.strokeStyle = '#000';
-		context.lineWidth = 5;
+		context.lineWidth = 10;
 		context.lineJoin = "round";
 		context.lineCap = "round";
 		canvas.on({
@@ -56,7 +56,32 @@ $(function() {
 			'touchend': function() { drawing = false; }
 		});
 
-		$("#delete_button").click(function () {
+		$('#send').on('click', function(e) {
+			e.preventDefault();
+			var base64 = canvas[0].toDataURL();
+			var bin = atob(base64.split(',')[1]);
+			var buffer = new Uint8Array(bin.length);
+			for (var i = 0; i < bin.length; i++) {
+				buffer[i] = bin.charCodeAt(i);
+			}
+			var file = new Blob([buffer.buffer], { type: 'image/jpeg' });
+			var data = new FormData();
+			data.append('file', file, $('#text').val()+'.jpg');
+			data.append('text', $('#text').val());
+			$.ajax({
+				type: 'POST',
+				url: '/upload',
+				data: data,
+				cache: false,
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					alert(data);
+				}
+			});
+		});
+		$('#delete').on('click', function(e) {
+			e.preventDefault();
 			context.clearRect(0, 0, canvas.width(), canvas.height());
 		});
 	}

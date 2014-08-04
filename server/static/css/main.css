@@ -25,11 +25,20 @@ div#loading {
 	left: 50%;
 }
 
-#delete_button {
-	margin-top: 50px;
-	font-size: 3rem;
+button.canvas {
+	font-size: 2.5rem;
+	margin-right: 20px;
 }
 
-#delete_button:active {
+button.btn-info:active {
 	background: #00f;
+}
+
+button.btn-warning:active {
+	background: #f00;
+}
+
+input[type=text] {
+	margin: 20px 0px 20px 0px;
+	font-size: 2.5rem;
 }
