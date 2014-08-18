@@ -1,7 +1,11 @@
 # Shrift
 
 Shrift is OCR(Optical Character Recognition) engine.
-Server-side program is written with Python, and client application is written with Swift on iOS.
+Server-side program is written with Python and MongoDB, and client application is written with Swift on iOS.
+
+## General
+Today, deep learning will become new fields not only in machine learning, but in whole IT.
+This project is meant to utilize machine learning (also deep learning) to realize OCR engine for Japanese.
 
 ## server program
 Enter /server, and launch server.
