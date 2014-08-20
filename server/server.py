@@ -9,9 +9,9 @@ def allowed_file(filename):
 	return '.' in filename and \
 			filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-@app.route('/')
+@app.route('/test')
 def index():
-	return render_template('index.html', body="""
+	return render_template('test.html', body="""
 	<h1>Shrift OCR Engine Database</h1>
 	""")
 
@@ -27,7 +27,7 @@ def show_data(char):
 	if html == "":
 		html = "<h2>no data...</h2>"
 
-	return render_template('index.html', body=unicode("""
+	return render_template('test.html', body=unicode("""
 	<h1>Train Data for "{}"</h1>{}
 	""".format(romkan.to_hiragana(char).encode('utf-8'), html), encoding='utf-8'))
 
@@ -45,7 +45,7 @@ def image_data(hashv):
 def make_train_data():
 	import shrift
 	shrift.generate_train_data()
-	return render_template('index.html', body="""
+	return render_template('test.html', body="""
 	<h3>Generating train data...</h3>
 	<div id="progress">
 		<div id="loading"></div>
@@ -54,7 +54,7 @@ def make_train_data():
 
 @app.route('/add', methods=['GET'])
 def make_canvas():
-	return render_template('index.html', body="""
+	return render_template('test.html', body="""
 	<h3>draw character in canvas</h3>
 	<canvas id="canvas" width=400 height=400 style="border: solid">
 	</canvas> 
@@ -103,4 +103,3 @@ def clear():
 
 if __name__ == '__main__':
 	app.run(debug=True, host=socket.gethostbyname(socket.gethostname()))
-	#app.run(debug=True, host=socket.gethostbyname(socket.gethostname()))
