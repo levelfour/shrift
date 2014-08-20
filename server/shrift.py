@@ -36,7 +36,7 @@ def extract(raw_str):
 	img = img.resize((400, 400))
 	# グレースケール化した画像を行列にする
 	# 白成分が多いので白黒を反転させる
-	imarray = np.asarray(img.point(lambda x: 255 - x))
+	imarray = np.asarray(img.point(lambda x: (255 - x)/255.))
 	# 各区画の濃淡の平均をとり特徴ベクトルとする
 	return np.array([
 		[imarray[10*i:10*(i+1),10*j:10*(j+1)].mean()
