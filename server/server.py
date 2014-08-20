@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os, re, base64
+import os
 import socket
 from config import *
 
@@ -103,3 +103,4 @@ def clear():
 
 if __name__ == '__main__':
 	app.run(debug=True, host=socket.gethostbyname(socket.gethostname()))
+	#app.run(debug=True, host=socket.gethostbyname(socket.gethostname()))
