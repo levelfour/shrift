@@ -83,7 +83,6 @@ def make_canvas():
 @app.route('/ocr', methods=['POST'])
 def upload_file():
 	if request.method == 'POST':
-		return text(request.files)
 		file = request.files['file']
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)

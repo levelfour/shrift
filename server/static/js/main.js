@@ -14,6 +14,30 @@ function set_eraser(context) {
 	context.lineCap = "round";
 }
 
+function send_image(canvas, url, filename) {
+	var base64 = canvas[0].toDataURL();
+	var bin = atob(base64.split(',')[1]);
+	var buffer = new Uint8Array(bin.length);
+	for (var i = 0; i < bin.length; i++) {
+		buffer[i] = bin.charCodeAt(i);
+	}
+	var file = new Blob([buffer.buffer], { type: 'image/jpeg' });
+	var data = new FormData();
+	data.append('file', file, filename+'.jpg');
+	data.append('text', filename);
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: data,
+		cache: false,
+		processData: false,
+		contentType: false,
+		success: function(data) {
+			alert(data);
+		}
+	});
+}
+
 $(function() {
 	var canvas = $('canvas#canvas');
 	if(canvas.length == 1) {
@@ -78,41 +102,19 @@ $(function() {
 			'touchend': function() { drawing = false; }
 		});
 
-		$('#send').on('click', function(e) {
-			e.preventDefault();
-			var base64 = canvas[0].toDataURL();
-			var bin = atob(base64.split(',')[1]);
-			var buffer = new Uint8Array(bin.length);
-			for (var i = 0; i < bin.length; i++) {
-				buffer[i] = bin.charCodeAt(i);
-			}
-			var file = new Blob([buffer.buffer], { type: 'image/jpeg' });
-			var data = new FormData();
-			data.append('file', file, $('#text').val()+'.jpg');
-			data.append('text', $('#text').val());
-			$.ajax({
-				type: 'POST',
-				url: '/upload',
-				data: data,
-				cache: false,
-				processData: false,
-				contentType: false,
-				success: function(data) {
-					alert(data);
-				}
-			});
+		$('#send').on('click', function() {
+			send_image(canvas, '/upload', $('#text').val());
+			return false;
 		});
 		
-		$('#save').on('click', function(e) {
+		$('#save').on('click', function() {
 			if(confirm('Are you sure to save image?')) {
-				e.preventDefault();
 				window.location = canvas[0].toDataURL();
-			} else {
-				return false;
 			}
+			return false;
 		});
 		
-		$('#erase').on('click', function(e) {
+		$('#erase').on('click', function() {
 			if(erasing) {
 				set_pencil(context);
 				$('#erase > img').css('opacity', '1');
@@ -125,13 +127,16 @@ $(function() {
 			return false;	
 		});
 		
-		$('#delete').on('click', function(e) {
+		$('#delete').on('click', function() {
 			if(confirm('Are you sure to clear canvas?')) {
-				e.preventDefault();
 				context.clearRect(0, 0, canvas.width(), canvas.height());
-			} else {
-				return false;
 			}
+			return false;
+		});
+		
+		$('#shrift').on('click', function() {
+			send_image(canvas, '/ocr', 'shrift');
+			return false;
 		});
 	}
 });
