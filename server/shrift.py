@@ -87,14 +87,19 @@ def chars(filename):
  
 	im = Image.open(filename).convert("L").resize((400,400))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
+	raw_datas = []
+
 	h = map(lambda x: np.mean(x), im)
 	line_secs = extract_sections(h)
-   
 	for (i, sec) in enumerate(line_secs):
 		sub = im[sec[0]:sec[1]]
-		subim = Image.fromarray(sub)
-		subim = subim.point(lambda x: 255*(1-x))
-		subim.save('file/sub_{}.jpg'.format(i))
+		u = map(lambda x: np.mean(x), sub.T)
+		char_secs = extract_sections(u)
+		for (j, s) in enumerate(char_secs):
+			char = sub.T[s[0]:s[1]].T
+			char_im = Image.fromarray(char)
+			char_im = char_im.point(lambda x: 255*(1-x))
+			char_im.save("file/%i_%i.jpg" % (i, j))
 
 # アプリからアップロードされた画像からオフラインOCRを行う
 def ocr(filename):
