@@ -4,6 +4,7 @@
 from config import *
 import os, sys, re, datetime
 import io
+import glob
 from PIL import Image
 import pyocr
 import pyocr.builders
@@ -75,8 +76,14 @@ def ocr(filename):
         os.path.abspath(os.path.dirname(__file__)),
         'file',
         filename)
+    # 最新のsvmlightファイルを取得する
+    flist = glob.glob('data/feature_*')
+    flist.sort(
+        cmp=lambda x, y: int(os.path.getctime(x) - os.path.getctime(y)),
+        reverse=True)
+    
     testX = extract(fpath)
-    trainX, trainY = datasets.load_svmlight_file('data/feature_201408210039.txt', n_features=1600)
+    trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
     clf = RandomForestClassifier()
     clf.fit(trainX.toarray(), trainY)
     return label[int(clf.predict(testX)[0])]
