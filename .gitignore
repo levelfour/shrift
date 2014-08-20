@@ -8,3 +8,4 @@
 !/**/*.xcworkspace/contents.xcworkspacedata
 .DS_Store
 /server/data
+/server/file

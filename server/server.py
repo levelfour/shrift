@@ -9,8 +9,21 @@ def allowed_file(filename):
 	return '.' in filename and \
 			filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-@app.route('/test')
+###############################
+# main page (memo app)
+###############################
+@app.route('/')
 def index():
+	return render_template('index.html', body="""
+	<canvas id="canvas" width=700 height=700 style="border: solid">
+	</canvas> 
+	""")
+
+###############################
+# test page (train app)
+###############################
+@app.route('/test')
+def test_index():
 	return render_template('test.html', body="""
 	<h1>Shrift OCR Engine Database</h1>
 	""")

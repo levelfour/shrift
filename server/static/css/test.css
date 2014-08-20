@@ -1,0 +1,44 @@
+body {
+	padding-top: 40px
+}
+
+.wrapper {
+	padding-top: 40px;
+	padding-left: 230px;
+}
+
+.sidebar-nav .row {
+	margin: 0;
+}
+
+.hiragana {
+	font-family: "HiraMaruProN-W4";
+	font-size: 20px;
+}
+
+div#progress {
+	position: relative;
+}
+
+div#loading {
+	position: absolute;
+	left: 50%;
+}
+
+button.canvas {
+	font-size: 2.5rem;
+	margin-right: 20px;
+}
+
+button.btn-info:active {
+	background: #00f;
+}
+
+button.btn-warning:active {
+	background: #f00;
+}
+
+input[type=text] {
+	margin: 20px 0px 20px 0px;
+	font-size: 2.5rem;
+}

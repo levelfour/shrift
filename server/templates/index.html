@@ -8,112 +8,26 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <link href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
     <style>
     </style>
   </head>
   <body>
     <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+      <div class="header">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand">Shrift OCR Engine</a>
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+          <a href="/"><img class='icon' src="{{ url_for('static', filename='img/icon.png') }}" /></a>
+          <a href="/"><img class='icon' src="{{ url_for('static', filename='img/new.png') }}" /></a>
         </div>
       </div>
     </div>
 
-    <div class="container">
-      <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/a">あ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/i">い</a></div>
-              <div class="hiragana col-md-2"><a href="/data/u">う</a></div>
-              <div class="hiragana col-md-2"><a href="/data/e">え</a></div>
-              <div class="hiragana col-md-2"><a href="/data/o">お</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/ka">か</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ki">き</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ku">く</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ke">け</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ko">こ</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/sa">さ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/si">し</a></div>
-              <div class="hiragana col-md-2"><a href="/data/su">す</a></div>
-              <div class="hiragana col-md-2"><a href="/data/se">せ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/so">そ</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/ta">た</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ti">ち</a></div>
-              <div class="hiragana col-md-2"><a href="/data/tu">つ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/te">て</a></div>
-              <div class="hiragana col-md-2"><a href="/data/to">と</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/na">な</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ni">に</a></div>
-              <div class="hiragana col-md-2"><a href="/data/nu">ぬ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ne">ね</a></div>
-              <div class="hiragana col-md-2"><a href="/data/no">の</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/ha">は</a></div>
-              <div class="hiragana col-md-2"><a href="/data/hi">ひ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/hu">ふ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/he">へ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ho">ほ</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/ma">ま</a></div>
-              <div class="hiragana col-md-2"><a href="/data/mi">み</a></div>
-              <div class="hiragana col-md-2"><a href="/data/mu">む</a></div>
-              <div class="hiragana col-md-2"><a href="/data/me">め</a></div>
-              <div class="hiragana col-md-2"><a href="/data/mo">も</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/ya">や</a></div>
-              <div class="hiragana col-md-2">　</div>
-              <div class="hiragana col-md-2"><a href="/data/yu">ゆ</a></div>
-              <div class="hiragana col-md-2">　</div>
-              <div class="hiragana col-md-2"><a href="/data/yo">よ</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/ra">ら</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ri">り</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ru">る</a></div>
-              <div class="hiragana col-md-2"><a href="/data/re">れ</a></div>
-              <div class="hiragana col-md-2"><a href="/data/ro">ろ</a></div>
-            </div>
-            <div class="row">
-              <div class="hiragana col-md-2"><a href="/data/wa">わ</a></div>
-              <div class="hiragana col-md-2">　</div>
-              <div class="hiragana col-md-2"><a href="/data/wo">を</a></div>
-              <div class="hiragana col-md-2">　</div>
-              <div class="hiragana col-md-2"><a href="/data/n">ん</a></div>
-            </div>
-          <li class="sidebar-brand">
-          <a href="/add">Add Data</a>
-          <a href="/download">Download</a>
-          </li>
-        </ul>
-      </div>
-
-      <div class='wrapper'>
-        {% autoescape false %}
-          {{ body }}
-        {% endautoescape %}
-      </div>
+    <div class='container'>
+      {% autoescape false %}
+      {{ body }}
+      {% endautoescape %}
     </div>
-  </body>
+  </div>
+</body>
 </html>
