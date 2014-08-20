@@ -32,9 +32,12 @@ label = [
 #	10*10の小区画の平均をとり、1600次元の特徴ベクトルとする
 # Vector: 40*40の1600次元濃淡ベクトル
 # Class: 各文字と一対一対応した整数値
-def encode(raw_str):
-	img = Image.open(raw_str).convert('L')
-	img = img.resize((400, 400))
+def encode(raw_str, raw=None):
+    img = raw
+    if raw == None:
+    	img = Image.open(raw_str).convert('L')
+        img = img.resize((400, 400))
+        
 	# グレースケール化した画像を行列にする
 	# 白成分が多いので白黒を反転させる
 	imarray = np.asarray(img.point(lambda x: (255 - x)/255.))
@@ -69,11 +72,36 @@ def generate_train_data():
 	with open(filename, 'w') as f:
 		datasets.dump_svmlight_file(data, target, f)
 
+def chars(filename):
+	def extract_sections(vector):
+		secs = []
+		sec = [-1, -1]
+		for (i, x) in enumerate(vector):
+			if x > 0 and sec == [-1, -1]:
+				sec[0] = i
+			elif x == 0 and sec != [-1, -1]:
+				sec[1] = i
+				secs.append(sec)
+				sec = [-1, -1]
+		return secs
+ 
+	im = Image.open(filename).convert("L").resize((400,400))
+	im = np.asarray(im.point(lambda x: 1 - x/255.))
+	h = map(lambda x: np.mean(x), im)
+	line_secs = extract_sections(h)
+   
+	for (i, sec) in enumerate(line_secs):
+		sub = im[sec[0]:sec[1]]
+		subim = Image.fromarray(sub)
+		subim = subim.point(lambda x: 255*(1-x))
+		subim.save('file/sub_{}.jpg'.format(i))
+
 # アプリからアップロードされた画像からオフラインOCRを行う
 def ocr(filename):
     import romkan
-    from sklearn.ensemble import RandomForestClassifier
-	
+    #from sklearn.ensemble import RandomForestClassifier
+    from sklearn.svm import SVC
+    
     fpath = os.path.join(
         os.path.abspath(os.path.dirname(__file__)),
         'file',
@@ -84,9 +112,11 @@ def ocr(filename):
         cmp=lambda x, y: int(os.path.getctime(x) - os.path.getctime(y)),
         reverse=True)
     
+    chars(fpath)
     testX = encode(fpath)
     trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
-    clf = RandomForestClassifier()
+    #clf = RandomForestClassifier()
+    clf = SVC()
     clf.fit(trainX.toarray(), trainY)
     return romkan.to_hiragana(label[int(clf.predict(testX)[0])])
 
