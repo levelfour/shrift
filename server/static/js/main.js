@@ -86,9 +86,23 @@ $(function() {
 				}
 			});
 		});
+		
+		$('#save').on('click', function(e) {
+			if(confirm('Are you sure to save image?')) {
+				e.preventDefault();
+				window.location = canvas[0].toDataURL();
+			} else {
+				return false;
+			}
+		});
+		
 		$('#delete').on('click', function(e) {
-			e.preventDefault();
-			context.clearRect(0, 0, canvas.width(), canvas.height());
+			if(confirm('Are you sure to clear canvas?')) {
+				e.preventDefault();
+				context.clearRect(0, 0, canvas.width(), canvas.height());
+			} else {
+				return false;
+			}
 		});
 	}
 });
