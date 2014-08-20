@@ -32,7 +32,7 @@ label = [
 # Vector: 40*40の1600次元濃淡ベクトル
 # Class: 各文字と一対一対応した整数値
 def extract(raw_str):
-	img = Image.open(io.BytesIO(raw_str)).convert('L')
+	img = Image.open(raw_str).convert('L')
 	img = img.resize((400, 400))
 	# グレースケール化した画像を行列にする
 	# 白成分が多いので白黒を反転させる
@@ -52,7 +52,7 @@ def generate_train_data():
 	target = []	# train-dataのクラス
 	for f in fs.find():
 		char, ext = os.path.splitext(f.filename)
-		v = extract(f.read())
+		v = extract(io.BytesIO(f.read()))
 		if data != None:
 			data = np.r_[data, v]
 		else:
@@ -69,11 +69,17 @@ def generate_train_data():
 		datasets.dump_svmlight_file(data, target, f)
 
 def ocr(filename):
-	fpath = os.path.join(
-			os.path.abspath(os.path.dirname(__file__)),
-			'file',
-			filename)
-	return recognize(fpath)
+    from sklearn.ensemble import RandomForestClassifier
+	
+    fpath = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)),
+        'file',
+        filename)
+    testX = extract(fpath)
+    trainX, trainY = datasets.load_svmlight_file('data/feature_201408201709.txt')
+    clf = RandomForestClassifier()
+    clf.fit(trainX.toarray(), trainY)
+    return label[int(clf.predict(testX)[0])]
 
 def recognize(filename, binarize=False):
 	re_ext = r'(.[A-Za-z]+)$'
