@@ -14,8 +14,13 @@ function set_eraser(context) {
 	context.lineCap = "round";
 }
 
+function clear(context, canvas) {
+	context.fillStyle = 'rgb(255,255,255)';
+	context.fillRect(0, 0, canvas.width()+1, canvas.height()+1);
+}
+
 function send_image(canvas, url, filename) {
-	var base64 = canvas[0].toDataURL();
+	var base64 = canvas[0].toDataURL('image/jpeg');
 	var bin = atob(base64.split(',')[1]);
 	var buffer = new Uint8Array(bin.length);
 	for (var i = 0; i < bin.length; i++) {
@@ -65,6 +70,7 @@ $(function() {
 			var mouseY = event.changedTouches[0].pageY - canvas.offset().top;
 			return {x:mouseX, y:mouseY};
 		}
+		clear(context, canvas);
 		set_pencil(context);
 		canvas.on({
 			'mousedown': function(e) {
@@ -109,7 +115,7 @@ $(function() {
 		
 		$('#save').on('click', function() {
 			if(confirm('Are you sure to save image?')) {
-				window.location = canvas[0].toDataURL();
+				window.location = canvas[0].toDataURL('image/jpeg');
 			}
 			return false;
 		});
@@ -129,7 +135,7 @@ $(function() {
 		
 		$('#delete').on('click', function() {
 			if(confirm('Are you sure to clear canvas?')) {
-				context.clearRect(0, 0, canvas.width(), canvas.height());
+				clear(context, canvas);
 			}
 			return false;
 		});

@@ -76,7 +76,7 @@ def ocr(filename):
         'file',
         filename)
     testX = extract(fpath)
-    trainX, trainY = datasets.load_svmlight_file('data/feature_201408201709.txt')
+    trainX, trainY = datasets.load_svmlight_file('data/feature_201408210039.txt', n_features=1600)
     clf = RandomForestClassifier()
     clf.fit(trainX.toarray(), trainY)
     return label[int(clf.predict(testX)[0])]
