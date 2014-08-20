@@ -1,7 +1,5 @@
 *.txt
 *_bin.*
-*.png
-*.jpg
 *.pyc
 /**/*.xcodeproj/*
 !/**/*.xcodeproj/project.pbxproj
