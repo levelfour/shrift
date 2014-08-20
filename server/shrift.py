@@ -28,8 +28,8 @@ label = [
 # 手書き文字1文字から特徴ベクトルを生成する
 # Algorithm:
 #	ShriftTrainerは400*400の画像を返すので、グレースケール化して
-#	40*40の小区画の平均をとり、100次元の特徴ベクトルとする
-# Vector: 10*10の100次元濃淡ベクトル
+#	10*10の小区画の平均をとり、1600次元の特徴ベクトルとする
+# Vector: 40*40の1600次元濃淡ベクトル
 # Class: 各文字と一対一対応した整数値
 def extract(raw_str):
 	img = Image.open(io.BytesIO(raw_str)).convert('L')
@@ -39,9 +39,9 @@ def extract(raw_str):
 	imarray = np.asarray(img.point(lambda x: 255 - x))
 	# 各区画の濃淡の平均をとり特徴ベクトルとする
 	return np.array([
-		[imarray[40*i:40*(i+1),40*j:40*(j+1)].mean()
-			for i in range(0, 10)
-			for j in range(0, 10)
+		[imarray[10*i:10*(i+1),10*j:10*(j+1)].mean()
+			for i in range(0, 40)
+			for j in range(0, 40)
 		]])
 
 # データベースに格納されているtrain-dataから
