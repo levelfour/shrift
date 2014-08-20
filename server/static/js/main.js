@@ -1,5 +1,19 @@
 $(window).on('touchmove', function(e) { e.preventDefault(); });
 
+function set_pencil(context) {
+	context.strokeStyle = '#000';
+	context.lineWidth = 10;
+	context.lineJoin = "round";
+	context.lineCap = "round";
+}
+
+function set_eraser(context) {
+	context.strokeStyle = '#fff';
+	context.lineWidth = 50;
+	context.lineJoin = "round";
+	context.lineCap = "round";
+}
+
 $(function() {
 	var canvas = $('canvas#canvas');
 	if(canvas.length == 1) {
@@ -15,6 +29,7 @@ $(function() {
 		}
 		
 		var drawing = false;
+		var erasing = false;
 		var pos;
 		function get_pos(event) {
 			var mouseX = event.pageX - canvas.offset().left;
@@ -26,10 +41,7 @@ $(function() {
 			var mouseY = event.changedTouches[0].pageY - canvas.offset().top;
 			return {x:mouseX, y:mouseY};
 		}
-		context.strokeStyle = '#000';
-		context.lineWidth = 10;
-		context.lineJoin = "round";
-		context.lineCap = "round";
+		set_pencil(context);
 		canvas.on({
 			'mousedown': function(e) {
 				drawing = true;
@@ -98,6 +110,19 @@ $(function() {
 			} else {
 				return false;
 			}
+		});
+		
+		$('#erase').on('click', function(e) {
+			if(erasing) {
+				set_pencil(context);
+				$('#erase > img').css('opacity', '1');
+				erasing = false;
+			} else {
+				set_eraser(context);
+				$('#erase > img').css('opacity', '0.4');
+				erasing = true;
+			}
+			return false;	
 		});
 		
 		$('#delete').on('click', function(e) {

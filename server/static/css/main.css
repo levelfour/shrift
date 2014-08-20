@@ -18,6 +18,10 @@ div.contents {
 	width: 40px;
 }
 
+#erase {
+	opacity: 1.0;
+}
+
 canvas#canvas {
 	margin: auto;
 	border: solid;
