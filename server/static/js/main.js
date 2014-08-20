@@ -3,15 +3,19 @@ $(window).on('touchmove', function(e) { e.preventDefault(); });
 $(function() {
 	var canvas = $('canvas#canvas');
 	if(canvas.length == 1) {
-		var size = {w: canvas.width(), h: canvas.height()};
-		canvas.css({
-			'width': '95%',
-			'height': '800px'
-		});
 		var context = canvas[0].getContext("2d");
+		
+		if(canvas.attr('retina')) {
+			var size = {w: canvas.width(), h: canvas.height()};
+			canvas.css({
+				'width': '95%',
+				'height': '800px'
+			});
+			context.scale(size.w/canvas.width(), size.h/canvas.height());
+		}
+		
 		var drawing = false;
 		var pos;
-		context.scale(size.w/canvas.width(), size.h/canvas.height());
 		function get_pos(event) {
 			var mouseX = event.pageX - canvas.offset().left;
 			var mouseY = event.pageY - canvas.offset().top;
