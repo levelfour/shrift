@@ -4,6 +4,7 @@ $(function() {
 	var canvas = $('canvas#canvas');
 	if(canvas.length == 1) {
 		var context = canvas[0].getContext("2d");
+		console.log(context);
 		var drawing = false;
 		var pos;
 		function get_pos(event) {
@@ -46,6 +47,7 @@ $(function() {
 					context.beginPath();
 					context.moveTo(pos.x, pos.y);
 					context.lineTo(current_pos.x, current_pos.y);
+					//console.log(pos.x+' '+pos.y+' '+current_pos.x+' '+current_pos.y);
 					context.stroke();
 					context.closePath();
 					pos = current_pos;

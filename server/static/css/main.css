@@ -1,3 +1,7 @@
+* {
+	-webkit-user-select: none;
+}
+
 body {
 	padding-top: 60px
 }
@@ -6,6 +10,15 @@ div.header {
 	padding: 3px;
 }
 
+div.contents {
+	text-align: center;
+}
+
 .icon {
 	width: 40px;
+}
+
+canvas#canvas {
+	margin: auto;
+	border: solid;
 }

@@ -15,8 +15,7 @@ def allowed_file(filename):
 @app.route('/')
 def index():
 	return render_template('index.html', body="""
-	<canvas id="canvas" width=700 height=700 style="border: solid">
-	</canvas> 
+	<canvas id="canvas" width=678 height=800 style="border: solid"></canvas> 
 	""")
 
 ###############################

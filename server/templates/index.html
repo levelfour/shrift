@@ -4,12 +4,12 @@
     <meta charset=utf-8 />
     <meta name="viewport" content="width=device-width,user-scalable=no">
     <title>Shrift OCR Engine</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
     <style>
     </style>
   </head>
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class='container'>
+    <div class='container contents'>
       {% autoescape false %}
       {{ body }}
       {% endautoescape %}
