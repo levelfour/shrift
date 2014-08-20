@@ -3,10 +3,15 @@ $(window).on('touchmove', function(e) { e.preventDefault(); });
 $(function() {
 	var canvas = $('canvas#canvas');
 	if(canvas.length == 1) {
+		var size = {w: canvas.width(), h: canvas.height()};
+		canvas.css({
+			'width': '95%',
+			'height': '800px'
+		});
 		var context = canvas[0].getContext("2d");
-		console.log(context);
 		var drawing = false;
 		var pos;
+		context.scale(size.w/canvas.width(), size.h/canvas.height());
 		function get_pos(event) {
 			var mouseX = event.pageX - canvas.offset().left;
 			var mouseY = event.pageY - canvas.offset().top;
@@ -47,7 +52,6 @@ $(function() {
 					context.beginPath();
 					context.moveTo(pos.x, pos.y);
 					context.lineTo(current_pos.x, current_pos.y);
-					//console.log(pos.x+' '+pos.y+' '+current_pos.x+' '+current_pos.y);
 					context.stroke();
 					context.closePath();
 					pos = current_pos;
