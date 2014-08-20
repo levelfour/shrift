@@ -32,7 +32,7 @@ label = [
 #	10*10の小区画の平均をとり、1600次元の特徴ベクトルとする
 # Vector: 40*40の1600次元濃淡ベクトル
 # Class: 各文字と一対一対応した整数値
-def extract(raw_str):
+def encode(raw_str):
 	img = Image.open(raw_str).convert('L')
 	img = img.resize((400, 400))
 	# グレースケール化した画像を行列にする
@@ -53,7 +53,7 @@ def generate_train_data():
 	target = []	# train-dataのクラス
 	for f in fs.find():
 		char, ext = os.path.splitext(f.filename)
-		v = extract(io.BytesIO(f.read()))
+		v = encode(io.BytesIO(f.read()))
 		if data != None:
 			data = np.r_[data, v]
 		else:
@@ -69,7 +69,9 @@ def generate_train_data():
 	with open(filename, 'w') as f:
 		datasets.dump_svmlight_file(data, target, f)
 
+# アプリからアップロードされた画像からオフラインOCRを行う
 def ocr(filename):
+    import romkan
     from sklearn.ensemble import RandomForestClassifier
 	
     fpath = os.path.join(
@@ -82,12 +84,14 @@ def ocr(filename):
         cmp=lambda x, y: int(os.path.getctime(x) - os.path.getctime(y)),
         reverse=True)
     
-    testX = extract(fpath)
+    testX = encode(fpath)
     trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
     clf = RandomForestClassifier()
     clf.fit(trainX.toarray(), trainY)
-    return label[int(clf.predict(testX)[0])]
+    return romkan.to_hiragana(label[int(clf.predict(testX)[0])])
 
+# tesseract-ocrを用いて文字認識する
+# * 英語のみ対応
 def recognize(filename, binarize=False):
 	re_ext = r'(.[A-Za-z]+)$'
 	r = re.compile(re_ext)
