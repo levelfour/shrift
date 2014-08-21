@@ -204,5 +204,6 @@ if __name__ == "__main__":
 	if len(sys.argv) < 2:
 		raise RuntimeError('too few args')
 
+	generate_classifier()
 	srcname = sys.argv[1]
 	print ocr(srcname)
