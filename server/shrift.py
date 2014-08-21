@@ -151,10 +151,13 @@ def ocr(filename):
 	for data in datas:
 		testX = encode(raw=data)
 		trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
-		clf = RandomForestClassifier(n_estimators=413)
+		clf = RandomForestClassifier(n_estimators=417)
 		#clf = SVC(C=3.1111111111111112, gamma=1.0)
 		clf.fit(trainX.toarray(), trainY)
-		result += romkan.to_hiragana(label[int(clf.predict(testX)[0])])
+		c = romkan.to_hiragana(label[int(clf.predict(testX)[0])])
+		sys.stdout.write(c)
+		result += c
+	sys.stdout.write('\n')
 
 	return result
 
