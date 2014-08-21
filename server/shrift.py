@@ -26,6 +26,24 @@ label = [
 	'wa', 'wo', 'n'
 ]
 
+clf = None
+
+# 学習器の生成
+def generate_classifier():
+	sys.stdout.write(" * Generating Classifier ... ")
+	from sklearn.ensemble import RandomForestClassifier
+	global clf
+	# 最新のsvmlightファイルを取得する
+	flist = glob.glob('data/feature_*')
+	flist.sort(
+			cmp=lambda x, y: int(os.path.getctime(x) - os.path.getctime(y)),
+			reverse=True)
+
+	trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
+	clf = RandomForestClassifier(n_estimators=417)
+	clf.fit(trainX.toarray(), trainY)
+	print("generated!")
+
 # 手書き文字1文字から特徴ベクトルを生成する
 # Algorithm:
 #	ShriftTrainerは400*400の画像を返すので、グレースケール化して
@@ -138,27 +156,14 @@ def chars(filename):
 # アプリからアップロードされた画像からオフラインOCRを行う
 def ocr(filename):
 	import romkan
-	from sklearn.ensemble import RandomForestClassifier
-	#from sklearn.svm import SVC
-
 	fpath = os.path.join(
 			os.path.abspath(os.path.dirname(__file__)),
 			'file',
 			filename)
-	# 最新のsvmlightファイルを取得する
-	flist = glob.glob('data/feature_*')
-	flist.sort(
-			cmp=lambda x, y: int(os.path.getctime(x) - os.path.getctime(y)),
-			reverse=True)
-
 	datas = chars(fpath)
 	result = ""
 	for data in datas:
 		testX = encode(raw=data)
-		trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
-		clf = RandomForestClassifier(n_estimators=417)
-		#clf = SVC(C=3.1111111111111112, gamma=1.0)
-		clf.fit(trainX.toarray(), trainY)
 		c = romkan.to_hiragana(label[int(clf.predict(testX)[0])])
 		sys.stdout.write(c)
 		result += c

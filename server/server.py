@@ -4,6 +4,7 @@
 import sys, os
 import socket
 from config import *
+from shrift import generate_classifier
 
 def allowed_file(filename):
 	return '.' in filename and \
@@ -39,6 +40,7 @@ def scale(file):
 ###############################
 @app.route('/')
 def index():
+	generate_classifier()
 	return render_template('index.html', body="""
 	<canvas id="canvas" retina="true" width=1400 height=1600 style="border: solid"></canvas> 
 	""")
