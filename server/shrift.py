@@ -11,6 +11,8 @@ import pyocr.builders
 import numpy as np
 from sklearn import datasets
 
+SIZE = 400	# 文字画像の縦横サイズ
+SPLIT = 20	# 認識対象の縦横分割数
 SVMLIGHT_OUTPUT_PATH = os.path.join(os.path.dirname(__file__), 'data')
 
 label = [
@@ -39,31 +41,36 @@ def generate_classifier():
 			cmp=lambda x, y: int(os.path.getctime(x) - os.path.getctime(y)),
 			reverse=True)
 
-	trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
-	clf = RandomForestClassifier(n_estimators=417)
-	clf.fit(trainX.toarray(), trainY)
-	print("generated!")
+	try:
+		trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=SPLIT**2)
+		clf = RandomForestClassifier(n_estimators=417)
+		clf.fit(trainX.toarray(), trainY)
+		print("generated!")
+	except ValueError as e:
+		print("cannot generate (%s)" % e)
 
 # 手書き文字1文字から特徴ベクトルを生成する
 # Algorithm:
-#	ShriftTrainerは400*400の画像を返すので、グレースケール化して
-#	10*10の小区画の平均をとり、1600次元の特徴ベクトルとする
-# Vector: 40*40の1600次元濃淡ベクトル
+#	ShriftTrainerはSIZE*SIZEの画像を返すので、グレースケール化して
+#	小区画の平均をとり、SPLIT**2次元の特徴ベクトルとする
+# Vector: SPLIT*SPLITのSPLIT**2次元濃淡ベクトル
 # Class: 各文字と一対一対応した整数値
 def encode(raw_str="", raw=None):
 	img = raw
 	if img is None:
 		img = Image.open(raw_str).convert('L')
 
-	img = img.resize((400, 400))
+	img = img.resize((SIZE, SIZE))
 
 	# グレースケール化した画像を行列にする
 	# 白成分が多いので白黒を反転させる
 	imarray = np.asarray(img.point(lambda x: (255 - x)/255.))
+	# 小区画の一辺のピクセル数
+	s = SIZE/SPLIT
 	return np.array([
-		[imarray[10*i:10*(i+1),10*j:10*(j+1)].mean()
-			for i in range(0, 40)
-			for j in range(0, 40)
+		[imarray[s*i:s*(i+1),s*j:s*(j+1)].mean()
+			for i in range(0, SPLIT)
+			for j in range(0, SPLIT)
 		]])
 
 # データベースに格納されているtrain-dataから
@@ -128,7 +135,7 @@ def scale(matrix):
  
 # 文字をベクトルのリストとして画像から抽出する
 def chars(filename):
-	im = Image.open(filename).convert("L").resize((400, 400))
+	im = Image.open(filename).convert("L").resize((SIZE, SIZE))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
 	raw_datas = []
 
@@ -146,7 +153,7 @@ def chars(filename):
 			char = sub.T[s[0]:s[1]].T
 			char = scale(char)
 			char_im = Image.fromarray(char)
-			char_im = char_im.resize((400, 400))
+			char_im = char_im.resize((SIZE, SIZE))
 			char_im = char_im.point(lambda x: 255*(1-x))
 			char_im.save("file/%i_%i.jpg" % (i, j))
 			raw_datas.append(char_im)
