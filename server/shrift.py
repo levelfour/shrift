@@ -33,6 +33,12 @@ label = [
 	'pa', 'pi', 'pu', 'pe', 'po',
 ]
 
+# 小文字
+small_label = [
+	'a', 'i', 'u', 'e', 'o',
+	'tu', 'ya', 'yu', 'yo',
+]
+
 clf = None
 
 # 学習器の生成
@@ -142,7 +148,8 @@ def scale(matrix):
 def chars(filename):
 	im = Image.open(filename).convert("L").resize((SIZE, SIZE))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
-	raw_datas = []
+	raw_datas = []	# 各文字の生データ
+	small = []		# 小文字かどうか
 
 	h = map(lambda x: np.mean(x), im)
 	line_secs = extract_sections(h)
@@ -156,6 +163,12 @@ def chars(filename):
 		# 文字を抽出する
 		for (j, s) in enumerate(char_secs):
 			char = sub.T[s[0]:s[1]].T
+			v = extract_sections(map(lambda x: np.mean(x), char))
+			# 行の高さと文字の高さを比較して小文字判定する
+			if len(v) == 1 and (v[0][1]-v[0][0]) < height*0.6:
+				small.append(True)
+			else:
+				small.append(False)
 			char = scale(char)
 			char_im = Image.fromarray(char)
 			char_im = char_im.resize((SIZE, SIZE))
@@ -163,7 +176,7 @@ def chars(filename):
 			char_im.save("file/%i_%i.jpg" % (i, j))
 			raw_datas.append(char_im)
 	
-	return raw_datas
+	return raw_datas, small
 
 # アプリからアップロードされた画像からオフラインOCRを行う
 def ocr(filename):
@@ -172,11 +185,16 @@ def ocr(filename):
 			os.path.abspath(os.path.dirname(__file__)),
 			'file',
 			filename)
-	datas = chars(fpath)
+	datas, small = chars(fpath)
 	result = ""
-	for data in datas:
+	for (i, data) in enumerate(datas):
 		testX = encode(raw=data)
-		c = romkan.to_hiragana(label[int(clf.predict(testX)[0])])
+		rom = label[int(clf.predict(testX)[0])]
+		# 小文字判定
+		if small[i] and rom in small_label:
+			rom = 'x' + rom
+
+		c = romkan.to_hiragana(rom)
 		sys.stdout.write(c)
 		result += c
 	sys.stdout.write('\n')
