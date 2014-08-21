@@ -20,8 +20,8 @@ def scale(file):
 	hsec = extract_sections(map(lambda x: np.mean(x), a))
 	vsec = extract_sections(map(lambda x: np.mean(x), a.T))
 	if len(hsec) > 1 or len(vsec) > 1:
-		print('something wrong with image')
-		return None
+		hsec = [hsec[0][0], hsec[-1][1]]
+		vsec = [vsec[0][0], vsec[-1][1]]
 	else:
 		hsec = hsec[0]
 		vsec = vsec[0]
