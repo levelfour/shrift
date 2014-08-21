@@ -93,7 +93,18 @@ def extract_sections(vector, threshold=None):
 			secs.append(sec)
 			sec = [-1, -1]
 	return secs
+
+# スケーリング
+def scale(matrix):
+	hsec = extract_sections(map(lambda x: np.mean(x), matrix))
+	vsec = extract_sections(map(lambda x: np.mean(x), matrix.T))
+	hsec = [hsec[0][0], hsec[-1][1]]
+	vsec = [vsec[0][0], vsec[-1][1]]
+	output = matrix[hsec[0]:hsec[1]]
+	output = output.T[vsec[0]:vsec[1]].T
+	return output
  
+# 文字をベクトルのリストとして画像から抽出する
 def chars(filename):
 	im = Image.open(filename).convert("L").resize((400, 400))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
@@ -110,9 +121,10 @@ def chars(filename):
 		# 文字を抽出する
 		for (j, s) in enumerate(char_secs):
 			char = sub.T[s[0]:s[1]].T
+			char = scale(char)
 			char_im = Image.fromarray(char)
-			char_im = char_im.point(lambda x: 255*(1-x))
 			char_im = char_im.resize((400, 400))
+			char_im = char_im.point(lambda x: 255*(1-x))
 			char_im.save("file/%i_%i.jpg" % (i, j))
 			raw_datas.append(char_im)
 	
@@ -142,7 +154,6 @@ def ocr(filename):
 		clf = RandomForestClassifier(n_estimators=413)
 		#clf = SVC(C=3.1111111111111112, gamma=1.0)
 		clf.fit(trainX.toarray(), trainY)
-		print str(testX)
 		result += romkan.to_hiragana(label[int(clf.predict(testX)[0])])
 
 	return result
