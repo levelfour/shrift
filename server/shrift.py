@@ -131,6 +131,7 @@ def extract_sections(vector, threshold=None):
 	result = []
 	# しきい値(threshold)を元に文字抽出リストを修正する
 	if not (threshold is None):
+		result.append([])
 		# x < ts*0.15			-> 0
 		# ts*0.15 < x < ts*0.6	-> 1
 		# ts*0.6 < x			-> 2
@@ -140,23 +141,26 @@ def extract_sections(vector, threshold=None):
 					0 if (s[1]-s[0]) < threshold*0.15 else 1
 				for s in secs]
 		print ts
-		skip = False
-		for (i, too_small) in enumerate(ts):
-			if skip:
-				skip = False
-				continue
-			if i+1 == len(ts):
-				result.append(secs[i])
-			elif too_small == 2 and ts[i+1] == 2:
-				result.append(secs[i])
-			elif too_small == 2 and ts[i+1] == 0 \
-				or too_small == 1 \
-				or too_small == 0:
-				result.append([secs[i][0], secs[i+1][1]])
-				skip = True
+		# 行データから尤もらしい文字の抽出の仕方を返す再帰関数
+		def gen_data(i):
+			print i
+			if i == len(ts):
+				return [[]]
+			elif i+1 == len(ts):
+				return [[secs[i]]]
+			elif ts[i] == 2 and ts[i+1] == 0 or ts[i] == 1 or ts[i] == 0:
+				a = gen_data(i+2)
+				[v.insert(0, [secs[i][0],secs[i+1][1]])
+					for v in a]
+				b = gen_data(i+1)
+				[v.insert(0, secs[i]) for v in b]
+				return a+b
 			else:
-				result.append(secs[i])
-		result = [result]
+				a = gen_data(i+1)
+				[v.insert(0, secs[i]) for v in a]
+				return a
+		
+		result = gen_data(0)
 	else:
 		result = secs
 
@@ -233,12 +237,12 @@ def ocr(filename):
 			if small[i] and rom in small_label:
 				rom = 'x' + rom
 
-			c = romkan.to_hiragana(rom)
-			sys.stdout.write(c)
-			s += c
-		sys.stdout.write('\n')
+			s += romkan.to_hiragana(rom)
+		# パターンごとの文字列長の違いを吸収する
+		l = l**(1./len(datas))
+		print("%s (%f)" % (s, l))
 		result.append(s)
-		likelihoods.append(l**(1./len(datas)))
+		likelihoods.append(l)
 	
 	# 認識結果のscoreが最大のものを採用する
 	like_i = likelihoods.index(max(likelihoods))
