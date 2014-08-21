@@ -1,13 +1,38 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os
+import sys, os
 import socket
 from config import *
 
 def allowed_file(filename):
 	return '.' in filename and \
 			filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+def scale(file):
+	from werkzeug import FileStorage
+	from PIL import Image
+	from StringIO import StringIO
+	from shrift import extract_sections
+	import numpy as np
+	im = Image.open(file).convert('L').resize((400, 400))
+	a = np.asarray(im.point(lambda x: 1-x/255.))
+	hsec = extract_sections(map(lambda x: np.mean(x), a))
+	vsec = extract_sections(map(lambda x: np.mean(x), a.T))
+	if len(hsec) > 1 or len(vsec) > 1:
+		print('something wrong with image')
+		return None
+	else:
+		hsec = hsec[0]
+		vsec = vsec[0]
+
+	b = a[hsec[0]:hsec[1]]
+	b = b.T[vsec[0]:vsec[1]].T
+	new_im = Image.fromarray(b).resize((400, 400))
+	new_im = new_im.point(lambda x: 255*(1-x))
+	buf = StringIO()
+	new_im.save(buf, 'jpeg')
+	return buf.getvalue()
 
 ###############################
 # main page (memo app)
@@ -98,6 +123,7 @@ def upload_train_data():
 		if file and allowed_file(file.filename):
 			name = secure_filename(file.filename)
 			char = request.form['text']
+			file = scale(file)
 			global fs
 			fs.put(file, filename=name, text=char)
 			return 'OK'
