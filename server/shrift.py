@@ -73,13 +73,20 @@ def generate_train_data():
 		datasets.dump_svmlight_file(data, target, f)
 
 def chars(filename):
-	def extract_sections(vector):
+	def extract_sections(vector, threshold=None):
 		secs = []
 		sec = [-1, -1]
 		for (i, x) in enumerate(vector):
 			if x > 0 and sec == [-1, -1]:
 				sec[0] = i
-			elif (x == 0 or i+1 == len(vector)) and sec != [-1, -1]:
+			elif x == 0 and sec != [-1, -1]:
+				# しきい値(文字幅etc.)より小さいときは保留する
+				if not (threshold is None) and (i-sec[0]) < threshold * 0.4:
+					continue
+				sec[1] = i
+				secs.append(sec)
+				sec = [-1, -1]
+			elif i+1 == len(vector) and sec != [-1, -1]:
 				sec[1] = i
 				secs.append(sec)
 				sec = [-1, -1]
@@ -94,8 +101,9 @@ def chars(filename):
 	# 行を抽出する
 	for (i, sec) in enumerate(line_secs):
 		sub = im[sec[0]:sec[1]]
+		height = len(sub)
 		u = map(lambda x: np.mean(x), sub.T)
-		char_secs = extract_sections(u)
+		char_secs = extract_sections(u, threshold=height)
 		# 文字を抽出する
 		for (j, s) in enumerate(char_secs):
 			char = sub.T[s[0]:s[1]].T
