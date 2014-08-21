@@ -109,8 +109,8 @@ def chars(filename):
 # アプリからアップロードされた画像からオフラインOCRを行う
 def ocr(filename):
 	import romkan
-	#from sklearn.ensemble import RandomForestClassifier
-	from sklearn.svm import SVC
+	from sklearn.ensemble import RandomForestClassifier
+	#from sklearn.svm import SVC
 
 	fpath = os.path.join(
 			os.path.abspath(os.path.dirname(__file__)),
@@ -127,8 +127,8 @@ def ocr(filename):
 	for data in datas:
 		testX = encode(raw=data)
 		trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
-		#clf = RandomForestClassifier()
-		clf = SVC()
+		clf = RandomForestClassifier(n_estimators=413)
+		#clf = SVC(C=3.1111111111111112, gamma=1.0)
 		clf.fit(trainX.toarray(), trainY)
 		print str(testX)
 		result += romkan.to_hiragana(label[int(clf.predict(testX)[0])])
