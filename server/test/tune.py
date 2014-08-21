@@ -21,7 +21,7 @@ parameters = {
 			'gamma': np.linspace(1, 2000, SIZE)
 		},
 		'rf': {
-			'n_estimators': np.arange(507, 514)
+			'n_estimators': np.arange(583, 590)
 		}
 }
 
