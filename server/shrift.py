@@ -156,6 +156,7 @@ def extract_sections(vector, threshold=None):
 				skip = True
 			else:
 				result.append(secs[i])
+		result = [result]
 	else:
 		result = secs
 
@@ -172,11 +173,11 @@ def scale(matrix):
 	return output
  
 # 文字をベクトルのリストとして画像から抽出する
+# @return: ([文字の生データ], [小文字])のリスト
 def chars(filename):
 	im = Image.open(filename).convert("L").resize((SIZE, SIZE))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
-	raw_datas = []	# 各文字の生データ
-	small = []		# 小文字かどうか
+	datas = []	# 各文字の生データ
 
 	h = map(lambda x: np.mean(x), im)
 	line_secs = extract_sections(h)
@@ -185,25 +186,29 @@ def chars(filename):
 		sub = im[sec[0]:sec[1]]
 		height = len(sub)
 		u = map(lambda x: np.mean(x), sub.T)
-		char_secs = extract_sections(u, threshold=height)
-		print char_secs,height
+		char_secs_list = extract_sections(u, threshold=height)
+		print char_secs_list,height
 		# 文字を抽出する
-		for (j, s) in enumerate(char_secs):
-			char = sub.T[s[0]:s[1]].T
-			v = extract_sections(map(lambda x: np.mean(x), char))
-			# 行の高さと文字の高さを比較して小文字判定する
-			if len(v) == 1 and (v[0][1]-v[0][0]) < height*0.6:
-				small.append(True)
-			else:
-				small.append(False)
-			char = scale(char)
-			char_im = Image.fromarray(char)
-			char_im = char_im.resize((SIZE, SIZE))
-			char_im = char_im.point(lambda x: 255*(1-x))
-			char_im.save("file/%i_%i.jpg" % (i, j))
-			raw_datas.append(char_im)
+		for char_secs in char_secs_list:
+			raw_data = []
+			small = []	# 小文字かどうか
+			for (j, s) in enumerate(char_secs):
+				char = sub.T[s[0]:s[1]].T
+				v = extract_sections(map(lambda x: np.mean(x), char))
+				# 行の高さと文字の高さを比較して小文字判定する
+				if len(v) == 1 and (v[0][1]-v[0][0]) < height*0.6:
+					small.append(True)
+				else:
+					small.append(False)
+				char = scale(char)
+				char_im = Image.fromarray(char)
+				char_im = char_im.resize((SIZE, SIZE))
+				char_im = char_im.point(lambda x: 255*(1-x))
+				char_im.save("file/%i_%i.jpg" % (i, j))
+				raw_data.append(char_im)
+			datas.append((raw_data, small))
 	
-	return raw_datas, small
+	return datas
 
 # アプリからアップロードされた画像からオフラインOCRを行う
 def ocr(filename):
@@ -212,26 +217,33 @@ def ocr(filename):
 			os.path.abspath(os.path.dirname(__file__)),
 			'file',
 			filename)
-	datas, small = chars(fpath)
-	result = ""
-	for (i, data) in enumerate(datas):
-		testX = encode(raw=data)
-		rom = label[int(clf.predict(testX)[0])]
-		proba = clf.predict_proba(testX)[0]
-		print max(proba)
-		#import matplotlib.pyplot as plt
-		#plt.plot(proba)
-		#plt.show()
-		# 小文字判定
-		if small[i] and rom in small_label:
-			rom = 'x' + rom
+	datalist = chars(fpath)
+	result = []
+	likelihoods = []
+	for datas in datalist:
+		datas, small = datas
+		s = ""	# 認識結果文字列
+		l = 1	# 認識結果のscore(=尤度の総和**(1/文字列長))
+		for (i, data) in enumerate(datas):
+			testX = encode(raw=data)
+			rom = label[int(clf.predict(testX)[0])]
+			proba = clf.predict_proba(testX)[0]
+			l *= max(proba) # 尤度をかける
+			# 小文字判定
+			if small[i] and rom in small_label:
+				rom = 'x' + rom
 
-		c = romkan.to_hiragana(rom)
-		sys.stdout.write(c)
-		result += c
-	sys.stdout.write('\n')
+			c = romkan.to_hiragana(rom)
+			sys.stdout.write(c)
+			s += c
+		sys.stdout.write('\n')
+		result.append(s)
+		likelihoods.append(l**(1./len(datas)))
+	
+	# 認識結果のscoreが最大のものを採用する
+	like_i = likelihoods.index(max(likelihoods))
 
-	return result
+	return result[like_i]
 
 # tesseract-ocrを用いて文字認識する
 # * 英語のみ対応
