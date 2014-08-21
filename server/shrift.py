@@ -73,17 +73,21 @@ def generate_train_data():
 		datasets.dump_svmlight_file(data, target, f)
 
 # スペクトラムから特徴量の山を範囲のリストとして抽出する
-# * threshold: threshold*[coefficient]を超えないと特徴量として認識しない
+# * threshold: 特徴量の幅を[threshold*(1-a), threshold*(1+a)]の間に束縛する
 def extract_sections(vector, threshold=None):
 	secs = []
 	sec = [-1, -1]
 	for (i, x) in enumerate(vector):
 		if x > 0 and sec == [-1, -1]:
+			# 特徴量の検出
 			sec[0] = i
 		elif x == 0 and sec != [-1, -1]:
-			# しきい値(文字幅etc.)より小さいときは保留する
-			if not (threshold is None) and (i-sec[0]) < threshold * 0.4:
+			if not(threshold is None) \
+					and ((i-sec[0]) < threshold*0.65 \
+					or (i-sec[0]) > threshold*1.35):
+				# 特徴量の山の幅をthreshold前後だと決め打ちにする
 				continue
+			# 特徴量の検出終了
 			sec[1] = i
 			secs.append(sec)
 			sec = [-1, -1]
@@ -118,6 +122,7 @@ def chars(filename):
 		height = len(sub)
 		u = map(lambda x: np.mean(x), sub.T)
 		char_secs = extract_sections(u, threshold=height)
+		print char_secs,height
 		# 文字を抽出する
 		for (j, s) in enumerate(char_secs):
 			char = sub.T[s[0]:s[1]].T
