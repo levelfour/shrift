@@ -110,6 +110,7 @@ $(function() {
 
 		$('#send').on('click', function() {
 			send_image(canvas, '/upload', $('#text').val());
+			clear(context, canvas);
 			return false;
 		});
 		
@@ -137,6 +138,11 @@ $(function() {
 			if(confirm('Are you sure to clear canvas?')) {
 				clear(context, canvas);
 			}
+			return false;
+		});
+
+		$('#clear').on('click', function() {
+			clear(context, canvas);
 			return false;
 		});
 		

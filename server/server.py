@@ -100,7 +100,7 @@ def make_canvas():
 			<input id="text" type="text" name="text" placeHolder="target character" />
 		</div>
 		<button class="canvas btn-info" type="submit" id="send">Send</button>
-		<button class="canvas btn-warning" id="delete">Clear</button>
+		<button class="canvas btn-warning" id="clear">Clear</button>
 	</form>
 	""")
 
