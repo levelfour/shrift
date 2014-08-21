@@ -109,7 +109,7 @@ def generate_train_data():
 		datasets.dump_svmlight_file(data, target, f)
 
 # スペクトラムから特徴量の山を範囲のリストとして抽出する
-# * threshold: 特徴量の幅を[threshold*(1-a), threshold*(1+a)]の間に束縛する
+# * threshold 
 def extract_sections(vector, threshold=None):
 	secs = []
 	sec = [-1, -1]
@@ -118,11 +118,6 @@ def extract_sections(vector, threshold=None):
 			# 特徴量の検出
 			sec[0] = i
 		elif x == 0 and sec != [-1, -1]:
-			if not(threshold is None) \
-					and ((i-sec[0]) < threshold*0.65 \
-					or (i-sec[0]) > threshold*1.35):
-				# 特徴量の山の幅をthreshold前後だと決め打ちにする
-				continue
 			# 特徴量の検出終了
 			sec[1] = i
 			secs.append(sec)
@@ -132,7 +127,39 @@ def extract_sections(vector, threshold=None):
 			sec[1] = i
 			secs.append(sec)
 			sec = [-1, -1]
-	return secs
+	
+	result = []
+	# しきい値(threshold)を元に文字抽出リストを修正する
+	if not (threshold is None):
+		# x < ts*0.15			-> 0
+		# ts*0.15 < x < ts*0.6	-> 1
+		# ts*0.6 < x			-> 2
+		ts = [
+				2 if (s[1]-s[0]) > threshold*0.6
+				else
+					0 if (s[1]-s[0]) < threshold*0.15 else 1
+				for s in secs]
+		print ts
+		skip = False
+		for (i, too_small) in enumerate(ts):
+			if skip:
+				skip = False
+				continue
+			if i+1 == len(ts):
+				result.append(secs[i])
+			elif too_small == 2 and ts[i+1] == 2:
+				result.append(secs[i])
+			elif too_small == 2 and ts[i+1] == 0 \
+				or too_small == 1 \
+				or too_small == 0:
+				result.append([secs[i][0], secs[i+1][1]])
+				skip = True
+			else:
+				result.append(secs[i])
+	else:
+		result = secs
+
+	return result
 
 # スケーリング
 def scale(matrix):
@@ -190,6 +217,11 @@ def ocr(filename):
 	for (i, data) in enumerate(datas):
 		testX = encode(raw=data)
 		rom = label[int(clf.predict(testX)[0])]
+		proba = clf.predict_proba(testX)[0]
+		print max(proba)
+		#import matplotlib.pyplot as plt
+		#plt.plot(proba)
+		#plt.show()
 		# 小文字判定
 		if small[i] and rom in small_label:
 			rom = 'x' + rom
