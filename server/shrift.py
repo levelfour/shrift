@@ -143,7 +143,6 @@ def extract_sections(vector, threshold=None):
 		print ts
 		# 行データから尤もらしい文字の抽出の仕方を返す再帰関数
 		def gen_data(i):
-			print i
 			if i == len(ts):
 				return [[]]
 			elif i+1 == len(ts):
@@ -191,7 +190,6 @@ def chars(filename):
 		height = len(sub)
 		u = map(lambda x: np.mean(x), sub.T)
 		char_secs_list = extract_sections(u, threshold=height)
-		print char_secs_list,height
 		# 文字を抽出する
 		for char_secs in char_secs_list:
 			raw_data = []
