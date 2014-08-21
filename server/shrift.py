@@ -79,13 +79,13 @@ def chars(filename):
 		for (i, x) in enumerate(vector):
 			if x > 0 and sec == [-1, -1]:
 				sec[0] = i
-			elif x == 0 and sec != [-1, -1]:
+			elif (x == 0 or i+1 == len(vector)) and sec != [-1, -1]:
 				sec[1] = i
 				secs.append(sec)
 				sec = [-1, -1]
 		return secs
  
-	im = Image.open(filename).convert("L").resize((400,400))
+	im = Image.open(filename).convert("L").resize((400, 400))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
 	raw_datas = []
 
@@ -101,6 +101,7 @@ def chars(filename):
 			char = sub.T[s[0]:s[1]].T
 			char_im = Image.fromarray(char)
 			char_im = char_im.point(lambda x: 255*(1-x))
+			char_im = char_im.resize((400, 400))
 			char_im.save("file/%i_%i.jpg" % (i, j))
 			raw_datas.append(char_im)
 	
