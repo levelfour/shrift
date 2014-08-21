@@ -32,16 +32,16 @@ label = [
 #	10*10の小区画の平均をとり、1600次元の特徴ベクトルとする
 # Vector: 40*40の1600次元濃淡ベクトル
 # Class: 各文字と一対一対応した整数値
-def encode(raw_str, raw=None):
-    img = raw
-    if raw == None:
-    	img = Image.open(raw_str).convert('L')
-        img = img.resize((400, 400))
-        
+def encode(raw_str="", raw=None):
+	img = raw
+	if img is None:
+		img = Image.open(raw_str).convert('L')
+
+	img = img.resize((400, 400))
+
 	# グレースケール化した画像を行列にする
 	# 白成分が多いので白黒を反転させる
 	imarray = np.asarray(img.point(lambda x: (255 - x)/255.))
-	# 各区画の濃淡の平均をとり特徴ベクトルとする
 	return np.array([
 		[imarray[10*i:10*(i+1),10*j:10*(j+1)].mean()
 			for i in range(0, 40)
@@ -91,39 +91,49 @@ def chars(filename):
 
 	h = map(lambda x: np.mean(x), im)
 	line_secs = extract_sections(h)
+	# 行を抽出する
 	for (i, sec) in enumerate(line_secs):
 		sub = im[sec[0]:sec[1]]
 		u = map(lambda x: np.mean(x), sub.T)
 		char_secs = extract_sections(u)
+		# 文字を抽出する
 		for (j, s) in enumerate(char_secs):
 			char = sub.T[s[0]:s[1]].T
 			char_im = Image.fromarray(char)
 			char_im = char_im.point(lambda x: 255*(1-x))
 			char_im.save("file/%i_%i.jpg" % (i, j))
+			raw_datas.append(char_im)
+	
+	return raw_datas
 
 # アプリからアップロードされた画像からオフラインOCRを行う
 def ocr(filename):
-    import romkan
-    #from sklearn.ensemble import RandomForestClassifier
-    from sklearn.svm import SVC
-    
-    fpath = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)),
-        'file',
-        filename)
-    # 最新のsvmlightファイルを取得する
-    flist = glob.glob('data/feature_*')
-    flist.sort(
-        cmp=lambda x, y: int(os.path.getctime(x) - os.path.getctime(y)),
-        reverse=True)
-    
-    chars(fpath)
-    testX = encode(fpath)
-    trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
-    #clf = RandomForestClassifier()
-    clf = SVC()
-    clf.fit(trainX.toarray(), trainY)
-    return romkan.to_hiragana(label[int(clf.predict(testX)[0])])
+	import romkan
+	#from sklearn.ensemble import RandomForestClassifier
+	from sklearn.svm import SVC
+
+	fpath = os.path.join(
+			os.path.abspath(os.path.dirname(__file__)),
+			'file',
+			filename)
+	# 最新のsvmlightファイルを取得する
+	flist = glob.glob('data/feature_*')
+	flist.sort(
+			cmp=lambda x, y: int(os.path.getctime(x) - os.path.getctime(y)),
+			reverse=True)
+
+	datas = chars(fpath)
+	result = ""
+	for data in datas:
+		testX = encode(raw=data)
+		trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=1600)
+		#clf = RandomForestClassifier()
+		clf = SVC()
+		clf.fit(trainX.toarray(), trainY)
+		print str(testX)
+		result += romkan.to_hiragana(label[int(clf.predict(testX)[0])])
+
+	return result
 
 # tesseract-ocrを用いて文字認識する
 # * 英語のみ対応
