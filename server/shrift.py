@@ -176,7 +176,8 @@ def scale(matrix):
 	return output
  
 # 文字をベクトルのリストとして画像から抽出する
-# @return: ([文字の生データ], [小文字])のリスト
+# @return: ([文字の生データ], [小文字])の想定されうるパターンのリスト
+#	-> 行ごとのリストになっている
 def chars(filename):
 	im = Image.open(filename).convert("L").resize((SIZE, SIZE))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
@@ -186,6 +187,7 @@ def chars(filename):
 	line_secs = extract_sections(h)
 	# 行を抽出する
 	for (i, sec) in enumerate(line_secs):
+		line_datas = []
 		sub = im[sec[0]:sec[1]]
 		height = len(sub)
 		u = map(lambda x: np.mean(x), sub.T)
@@ -208,7 +210,8 @@ def chars(filename):
 				char_im = char_im.point(lambda x: 255*(1-x))
 				char_im.save("file/%i_%i.jpg" % (i, j))
 				raw_data.append(char_im)
-			datas.append((raw_data, small))
+			line_datas.append((raw_data, small))
+		datas.append(line_datas)
 	
 	return datas
 
@@ -220,32 +223,35 @@ def ocr(filename):
 			'file',
 			filename)
 	datalist = chars(fpath)
-	result = []
-	likelihoods = []
-	for datas in datalist:
-		datas, small = datas
-		s = ""	# 認識結果文字列
-		l = 1	# 認識結果のscore(=尤度の総和**(1/文字列長))
-		for (i, data) in enumerate(datas):
-			testX = encode(raw=data)
-			rom = label[int(clf.predict(testX)[0])]
-			proba = clf.predict_proba(testX)[0]
-			l *= max(proba) # 尤度をかける
-			# 小文字判定
-			if small[i] and rom in small_label:
-				rom = 'x' + rom
+	ocr_str = ""
+	for line_datas in datalist:
+		result = []
+		likelihoods = []
+		for datas in line_datas:
+			datas, small = datas
+			s = ""	# 認識結果文字列
+			l = 1	# 認識結果のscore(=尤度の総和**(1/文字列長))
+			for (i, data) in enumerate(datas):
+				testX = encode(raw=data)
+				rom = label[int(clf.predict(testX)[0])]
+				proba = clf.predict_proba(testX)[0]
+				l *= max(proba) # 尤度をかける
+				# 小文字判定
+				if small[i] and rom in small_label:
+					rom = 'x' + rom
 
-			s += romkan.to_hiragana(rom)
-		# パターンごとの文字列長の違いを吸収する
-		l = l**(1./len(datas))
-		print("%s (%f)" % (s, l))
-		result.append(s)
-		likelihoods.append(l)
+				s += romkan.to_hiragana(rom)
+			# パターンごとの文字列長の違いを吸収する
+			l = l**(1./len(datas))
+			print("%s (%f)" % (s, l))
+			result.append(s)
+			likelihoods.append(l)
 	
-	# 認識結果のscoreが最大のものを採用する
-	like_i = likelihoods.index(max(likelihoods))
+		# 認識結果のscoreが最大のものを採用する
+		like_i = likelihoods.index(max(likelihoods))
+		ocr_str += (result[like_i] + '\n')
 
-	return result[like_i]
+	return ocr_str
 
 # tesseract-ocrを用いて文字認識する
 # * 英語のみ対応
