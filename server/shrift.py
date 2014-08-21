@@ -72,26 +72,29 @@ def generate_train_data():
 	with open(filename, 'w') as f:
 		datasets.dump_svmlight_file(data, target, f)
 
-def chars(filename):
-	def extract_sections(vector, threshold=None):
-		secs = []
-		sec = [-1, -1]
-		for (i, x) in enumerate(vector):
-			if x > 0 and sec == [-1, -1]:
-				sec[0] = i
-			elif x == 0 and sec != [-1, -1]:
-				# しきい値(文字幅etc.)より小さいときは保留する
-				if not (threshold is None) and (i-sec[0]) < threshold * 0.4:
-					continue
-				sec[1] = i
-				secs.append(sec)
-				sec = [-1, -1]
-			elif i+1 == len(vector) and sec != [-1, -1]:
-				sec[1] = i
-				secs.append(sec)
-				sec = [-1, -1]
-		return secs
+# スペクトラムから特徴量の山を範囲のリストとして抽出する
+# * threshold: threshold*[coefficient]を超えないと特徴量として認識しない
+def extract_sections(vector, threshold=None):
+	secs = []
+	sec = [-1, -1]
+	for (i, x) in enumerate(vector):
+		if x > 0 and sec == [-1, -1]:
+			sec[0] = i
+		elif x == 0 and sec != [-1, -1]:
+			# しきい値(文字幅etc.)より小さいときは保留する
+			if not (threshold is None) and (i-sec[0]) < threshold * 0.4:
+				continue
+			sec[1] = i
+			secs.append(sec)
+			sec = [-1, -1]
+		elif i+1 == len(vector) and sec != [-1, -1]:
+			# 画像の末尾に達したときは強制的に特徴量を抽出
+			sec[1] = i
+			secs.append(sec)
+			sec = [-1, -1]
+	return secs
  
+def chars(filename):
 	im = Image.open(filename).convert("L").resize((400, 400))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
 	raw_datas = []
