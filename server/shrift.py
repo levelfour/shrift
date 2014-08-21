@@ -25,7 +25,12 @@ label = [
 	'ma', 'mi', 'mu', 'me', 'mo',
 	'ya', 'yu', 'yo',
 	'ra', 'ri', 'ru', 're', 'ro',
-	'wa', 'wo', 'n'
+	'wa', 'wo', 'n',
+	'ga', 'gi', 'gu', 'ge', 'go',
+	'za', 'zi', 'zu', 'ze', 'zo',
+	'da', 'di', 'du', 'de', 'do',
+	'ba', 'bi', 'bu', 'be', 'bo',
+	'pa', 'pi', 'pu', 'pe', 'po',
 ]
 
 clf = None
