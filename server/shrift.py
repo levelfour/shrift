@@ -48,7 +48,7 @@ def generate_classifier():
 
 	try:
 		trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=SPLIT**2)
-		clf = RandomForestClassifier(n_estimators=417)
+		clf = RandomForestClassifier(n_estimators=508)
 		clf.fit(trainX.toarray(), trainY)
 		print("generated!")
 	except ValueError as e:
