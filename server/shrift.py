@@ -147,7 +147,17 @@ def extract_sections(vector, threshold=None):
 				return [[]]
 			elif i+1 == len(ts):
 				return [[secs[i]]]
-			elif ts[i] == 2 and ts[i+1] == 0 or ts[i] == 1 or ts[i] == 0:
+			elif i <= len(ts) - 3 and ts[i] != 2 \
+					and ts[i+1] != 2 and ts[i+2] != 2:
+				# 「ふ」判定用
+				a = gen_data(i+3)
+				[v.insert(0, [secs[i][0],secs[i+2][1]])
+					for v in a]
+				b = gen_data(i+2)
+				[v.insert(0, [secs[i][0],secs[i+1][1]])
+					for v in b]
+				return a+b
+			elif ts[i] == 2 and ts[i+1] != 2 or ts[i] == 1 or ts[i] == 0:
 				a = gen_data(i+2)
 				[v.insert(0, [secs[i][0],secs[i+1][1]])
 					for v in a]
