@@ -20,9 +20,8 @@ div.contents {
 	width: 40px;
 }
 
-#erase {
-	opacity: 1.0;
-}
+#pen   { opacity: 1.0 }
+#erase { opacity: 0.3 }
 
 #canvas_wrapper {
 	position: relative;

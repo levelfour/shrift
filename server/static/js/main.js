@@ -121,17 +121,20 @@ $(function() {
 			return false;
 		});
 		
+		$('#pen').on('click', function() {
+			set_pencil(context);
+			$('#pen').css('opacity', '1');
+			$('#erase').css('opacity', '0.3');
+			erasing = false;
+			return false;
+		});
+		
 		$('#erase').on('click', function() {
-			if(erasing) {
-				set_pencil(context);
-				$('#erase > img').css('opacity', '1');
-				erasing = false;
-			} else {
-				set_eraser(context);
-				$('#erase > img').css('opacity', '0.4');
-				erasing = true;
-			}
-			return false;	
+			set_eraser(context);
+			$('#pen').css('opacity', '0.3');
+			$('#erase').css('opacity', '1');
+			erasing = true;
+			return false;
 		});
 		
 		$('#delete').on('click', function() {
