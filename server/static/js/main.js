@@ -52,7 +52,7 @@ $(function() {
 			var size = {w: canvas.width(), h: canvas.height()};
 			canvas.css({
 				'width': '95%',
-				'height': '800px'
+				'height': '830px'
 			});
 			context.scale(size.w/canvas.width(), size.h/canvas.height());
 		}

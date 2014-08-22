@@ -41,7 +41,10 @@ def scale(file):
 @app.route('/')
 def index():
 	return render_template('index.html', body="""
-	<canvas id="canvas" retina="true" width=1400 height=1600 style="border: solid"></canvas> 
+	<div id="canvas_wrapper">
+		<canvas id="canvas" retina="true" width=1400 height=1600>
+		</canvas> 
+	</div>
 	""")
 
 ###############################

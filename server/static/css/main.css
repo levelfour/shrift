@@ -3,7 +3,9 @@
 }
 
 body {
-	padding-top: 60px
+	padding-top: 60px;
+	background: linear-gradient(#bbb, #444);
+	height: 1400px;
 }
 
 div.header {
@@ -22,7 +24,15 @@ div.contents {
 	opacity: 1.0;
 }
 
-canvas#canvas {
-	margin: auto;
-	border: solid;
+#canvas_wrapper {
+	position: relative;
 }
+
+canvas#canvas {
+	z-index: 0;
+	margin: auto;
+	border: solid 1px #888;
+	border-radius: 10px;
+	box-shadow: 8px 8px 5px;
+}
+
