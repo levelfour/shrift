@@ -22,6 +22,8 @@ div.contents {
 
 #pen   { opacity: 1.0 }
 #erase { opacity: 0.3 }
+#undo  { opacity: 0.3 }
+#redo  { opacity: 0.3 }
 
 #canvas_wrapper {
 	position: relative;
