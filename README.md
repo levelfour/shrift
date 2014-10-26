@@ -7,6 +7,23 @@ Server-side program is written with Python and MongoDB, and client application i
 Today, deep learning will become new fields not only in machine learning, but in whole IT.
 This project is meant to utilize machine learning (also deep learning) to realize OCR engine for Japanese.
 
+## Task
+### improve precision
+- [ ] enlarge datasets
+- [ ] tuning
+- [ ] heuristic methods
+- [ ] normalization before fitting
+- [ ] determine best algorithm
+- [ ] online recognition
+- [ ] consistency with dictionary
+
+### features
+- [x] basic OCR
+- [ ] reusable module
+- [ ] reuse test-data as train-data
+- [ ] cooperate with notebook app
+- [ ] recognize photo data
+
 ## server program
 Enter /server, and launch server.
 
