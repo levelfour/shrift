@@ -9,12 +9,13 @@ This project is meant to utilize machine learning (also deep learning) to realiz
 
 ## Task
 ### improve precision
+- [ ] better character extraction algorithm
+- [ ] online recognition
 - [ ] enlarge datasets
 - [ ] tuning
 - [ ] heuristic methods
 - [ ] normalization before fitting
 - [ ] determine best algorithm
-- [ ] online recognition
 - [ ] consistency with dictionary
 
 ### features
