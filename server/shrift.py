@@ -6,8 +6,6 @@ import os, sys, re, datetime
 import io
 import glob
 from PIL import Image
-import pyocr
-import pyocr.builders
 import numpy as np
 from sklearn import datasets
 
@@ -108,9 +106,41 @@ def generate_train_data():
 	with open(filename, 'w') as f:
 		datasets.dump_svmlight_file(data, target, f)
 
-# スペクトラムから特徴量の山を範囲のリストとして抽出する
+# スペクトルから特徴量の山を範囲のリストとして行を抽出する
+def extract_lines(vector):
+	secs = []
+	sec = [-1, -1]
+	for (i, x) in enumerate(vector):
+		if x > 0 and sec == [-1, -1]:
+			# 特徴量の検出
+			sec[0] = i
+		elif x == 0 and sec != [-1, -1]:
+			# 特徴量の検出終了
+			sec[1] = i
+			secs.append(sec)
+			sec = [-1, -1]
+		elif i+1 == len(vector) and sec != [-1, -1]:
+			# 画像の末尾に達したときは強制的に特徴量を抽出
+			sec[1] = i
+			secs.append(sec)
+			sec = [-1, -1]
+
+	heights = np.array(map(lambda s: s[1]-s[0], secs))
+	# 「う」のような文字の行スペクトルを見ると2文字に
+	# 分離してしまうので、行高の小さい行に対して補正をかける
+	while heights.max() > heights.min() * 3:
+		min_i = np.argmin(heights)
+		if min_i < len(secs) - 1:
+			heights[min_i] += heights[min_i+1]
+			secs[min_i] = [secs[min_i][0], secs[min_i+1][1]]
+			heights = np.delete(heights, min_i+1)
+			secs = np.delete(secs, min_i+1, axis=0)
+	
+	return secs
+
+# スペクトルから特徴量の山を範囲のリストとして文字を抽出する
 # * threshold 
-def extract_sections(vector, threshold=None):
+def extract_characters(vector, threshold=None):
 	secs = []
 	sec = [-1, -1]
 	for (i, x) in enumerate(vector):
@@ -177,8 +207,8 @@ def extract_sections(vector, threshold=None):
 
 # スケーリング
 def scale(matrix):
-	hsec = extract_sections(map(lambda x: np.mean(x), matrix))
-	vsec = extract_sections(map(lambda x: np.mean(x), matrix.T))
+	hsec = extract_lines(map(lambda x: np.mean(x), matrix))
+	vsec = extract_characters(map(lambda x: np.mean(x), matrix.T))
 	hsec = [hsec[0][0], hsec[-1][1]]
 	vsec = [vsec[0][0], vsec[-1][1]]
 	output = matrix[hsec[0]:hsec[1]]
@@ -194,21 +224,21 @@ def chars(filename):
 	datas = []	# 各文字の生データ
 
 	h = map(lambda x: np.mean(x), im)
-	line_secs = extract_sections(h)
+	line_secs = extract_lines(h)
 	# 行を抽出する
 	for (i, sec) in enumerate(line_secs):
 		line_datas = []
 		sub = im[sec[0]:sec[1]]
 		height = len(sub)
 		u = map(lambda x: np.mean(x), sub.T)
-		char_secs_list = extract_sections(u, threshold=height)
+		char_secs_list = extract_characters(u, threshold=height)
 		# 文字を抽出する
 		for char_secs in char_secs_list:
 			raw_data = []
 			small = []	# 小文字かどうか
 			for (j, s) in enumerate(char_secs):
 				char = sub.T[s[0]:s[1]].T
-				v = extract_sections(map(lambda x: np.mean(x), char))
+				v = extract_characters(map(lambda x: np.mean(x), char))
 				# 行の高さと文字の高さを比較して小文字判定する
 				if len(v) == 1 and (v[0][1]-v[0][0]) < height*0.6:
 					small.append(True)
