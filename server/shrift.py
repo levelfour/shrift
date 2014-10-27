@@ -92,14 +92,16 @@ def generate_train_data():
 	target = []	# train-dataのクラス
 	for f in fs.find():
 		char, ext = os.path.splitext(f.filename)
+		# illegal file-name
+		if char not in label:
+			continue
 		v = encode(io.BytesIO(f.read()))
 		if data != None:
 			data = np.r_[data, v]
 		else:
 			data = v
-		target.append(char)
+		target.append(label.index(char))
 
-	target = map(lambda x: label.index(x), target)
 	now = datetime.datetime.today()
 	filename = os.path.join(
 			SVMLIGHT_OUTPUT_PATH,
