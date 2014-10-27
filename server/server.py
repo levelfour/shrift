@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys, os
+import sys, os, re
 import socket
 from config import *
 import shrift
@@ -14,12 +14,13 @@ def scale(file):
 	from werkzeug import FileStorage
 	from PIL import Image
 	from StringIO import StringIO
-	from shrift import extract_sections
+	from shrift import extract_lines
+	from shrift import extract_characters
 	import numpy as np
 	im = Image.open(file).convert('L').resize((400, 400))
 	a = np.asarray(im.point(lambda x: 1-x/255.))
-	hsec = extract_sections(map(lambda x: np.mean(x), a))
-	vsec = extract_sections(map(lambda x: np.mean(x), a.T))
+	hsec = extract_lines(map(lambda x: np.mean(x), a))
+	vsec = extract_characters(map(lambda x: np.mean(x), a.T))
 	if len(hsec) > 1 or len(vsec) > 1:
 		hsec = [hsec[0][0], hsec[-1][1]]
 		vsec = [vsec[0][0], vsec[-1][1]]
@@ -120,6 +121,16 @@ def upload_file():
 			return shrift.ocr(secure_filename(filename))
 
 # upload train data for machine learning
+@app.route('/upload', methods=['GET'])
+def upload_form():
+	return render_template('test.html', body="""
+	<form action="/upload" method="post" enctype="multipart/form-data">
+		<input type="file" name="file" />
+		<input id="text" type="text" name="text" />
+		<button class="btn-info" type="submit">Send</button>
+	</form>
+	""")
+
 @app.route('/upload', methods=['POST'])
 def upload_train_data():
 	if request.method == 'POST':
@@ -127,6 +138,8 @@ def upload_train_data():
 		if file and allowed_file(file.filename):
 			name = secure_filename(file.filename)
 			char = request.form['text']
+			if re.split("\.", name)[0] != char:
+				name = "{}.jpg".format(char)
 			file = scale(file)
 			global fs
 			fs.put(file, filename=name, text=char)
