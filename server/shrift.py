@@ -172,14 +172,23 @@ def extract_characters(vector, threshold=None):
 	if not (threshold is None):
 		result.append([])
 		# TODO: parameter
-		# x < ts*0.15			-> 0(濁点、半濁点など)
+		# x < ts*0.05			-> -1(ノイズ)
+		# ts*0.05 < x < ts*0.15	-> 0(濁点、半濁点など)
 		# ts*0.15 < x < ts*0.6	-> 1(「い」「け」等の縦棒)
 		# ts*0.6 < x			-> 2(通常の文字)
 		ts = [
 				2 if (s[1]-s[0]) > threshold*0.6
 				else
-					0 if (s[1]-s[0]) < threshold*0.15 else 1
+					-1 if (s[1]-s[0]) < threshold*0.05
+					else
+						0 if (s[1]-s[0]) < threshold*0.15
+						else 1
 				for s in secs]
+		# ノイズの除去
+		for (i, s) in enumerate(ts):
+			if s == -1:
+				ts = np.delete(ts, i, axis=0)
+				secs = np.delete(secs, i, axis=0)
 		print ts
 		# 行データから尤もらしい文字の抽出の仕方を返す再帰関数
 		def gen_data(i):
