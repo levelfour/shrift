@@ -133,10 +133,17 @@ def extract_lines(vector):
 	while heights.max() > heights.min() * 3: # TODO: parameter
 		min_i = np.argmin(heights)
 		if min_i < len(secs) - 1:
+			# 「う」「え」「ら」等の抽出に対応
 			heights[min_i] += heights[min_i+1]
 			secs[min_i] = [secs[min_i][0], secs[min_i+1][1]]
 			heights = np.delete(heights, min_i+1)
 			secs = np.delete(secs, min_i+1, axis=0)
+		else:
+			# 「き」「こ」「さ」等の抽出に対応
+			heights[min_i] += heights[min_i-1]
+			secs[min_i] = [secs[min_i-1][0], secs[min_i][1]]
+			heights = np.delete(heights, min_i-1)
+			secs = np.delete(secs, min_i-1, axis=0)
 	
 	return secs
 
@@ -299,6 +306,8 @@ def ocr(filename):
 			img.save('file/{}_{}.jpg'.format(
 				line_n, datalist[line_n][like_i][0].index(img)))
 
+	ocr_str = ocr_str.rstrip()
+	print u"Result: {}".format(ocr_str)
 	return ocr_str
 
 generate_classifier()
