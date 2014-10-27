@@ -24,6 +24,7 @@ This project is meant to utilize machine learning (also deep learning) to realiz
 - [ ] reuse test-data as train-data
 - [ ] cooperate with notebook app
 - [ ] recognize photo data
+- [ ] accelaration
 
 ## server program
 Enter /server, and launch server.

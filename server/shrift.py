@@ -165,9 +165,9 @@ def extract_characters(vector, threshold=None):
 	if not (threshold is None):
 		result.append([])
 		# TODO: parameter
-		# x < ts*0.15			-> 0
-		# ts*0.15 < x < ts*0.6	-> 1
-		# ts*0.6 < x			-> 2
+		# x < ts*0.15			-> 0(濁点、半濁点など)
+		# ts*0.15 < x < ts*0.6	-> 1(「い」「け」等の縦棒)
+		# ts*0.6 < x			-> 2(通常の文字)
 		ts = [
 				2 if (s[1]-s[0]) > threshold*0.6
 				else
@@ -252,7 +252,6 @@ def chars(filename):
 				char_im = Image.fromarray(char)
 				char_im = char_im.resize((SIZE, SIZE))
 				char_im = char_im.point(lambda x: 255*(1-x))
-				char_im.save("file/%i_%i.jpg" % (i, j))
 				raw_data.append(char_im)
 			line_datas.append((raw_data, small))
 		datas.append(line_datas)
@@ -268,7 +267,7 @@ def ocr(filename):
 			filename)
 	datalist = chars(fpath)
 	ocr_str = ""
-	for line_datas in datalist:
+	for (line_n, line_datas) in enumerate(datalist):
 		result = []
 		likelihoods = []
 		for datas in line_datas:
@@ -292,8 +291,13 @@ def ocr(filename):
 			likelihoods.append(l)
 	
 		# 認識結果のscoreが最大のものを採用する
-		like_i = likelihoods.index(max(likelihoods))
+		like_i = np.argmax(likelihoods)
 		ocr_str += (result[like_i] + '\n')
+
+		# 選択した抽出結果を画像として出力する
+		for img in datalist[line_n][like_i][0]:
+			img.save('file/{}_{}.jpg'.format(
+				line_n, datalist[line_n][like_i][0].index(img)))
 
 	return ocr_str
 
