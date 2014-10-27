@@ -9,6 +9,7 @@ from PIL import Image
 import numpy as np
 from sklearn import datasets
 
+# TODO: paramter
 SIZE = 400	# 文字画像の縦横サイズ
 SPLIT = 20	# 認識対象の縦横分割数
 SVMLIGHT_OUTPUT_PATH = os.path.join(os.path.dirname(__file__), 'data')
@@ -52,6 +53,7 @@ def generate_classifier():
 
 	try:
 		trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=SPLIT**2)
+		# TODO: paramter
 		clf = RandomForestClassifier(n_estimators=585)
 		clf.fit(trainX.toarray(), trainY)
 		print("generated!")
@@ -128,7 +130,7 @@ def extract_lines(vector):
 	heights = np.array(map(lambda s: s[1]-s[0], secs))
 	# 「う」のような文字の行スペクトルを見ると2文字に
 	# 分離してしまうので、行高の小さい行に対して補正をかける
-	while heights.max() > heights.min() * 3:
+	while heights.max() > heights.min() * 3: # TODO: parameter
 		min_i = np.argmin(heights)
 		if min_i < len(secs) - 1:
 			heights[min_i] += heights[min_i+1]
@@ -162,6 +164,7 @@ def extract_characters(vector, threshold=None):
 	# しきい値(threshold)を元に文字抽出リストを修正する
 	if not (threshold is None):
 		result.append([])
+		# TODO: parameter
 		# x < ts*0.15			-> 0
 		# ts*0.15 < x < ts*0.6	-> 1
 		# ts*0.6 < x			-> 2
@@ -240,6 +243,7 @@ def chars(filename):
 				char = sub.T[s[0]:s[1]].T
 				v = extract_characters(map(lambda x: np.mean(x), char))
 				# 行の高さと文字の高さを比較して小文字判定する
+				# TODO: parameter
 				if len(v) == 1 and (v[0][1]-v[0][0]) < height*0.6:
 					small.append(True)
 				else:
