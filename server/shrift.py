@@ -318,7 +318,7 @@ def ocr(filename):
 				line_n, datalist[line_n][like_i][0].index(img)))
 
 	ocr_str = ocr_str.rstrip()
-	print u"Result: {}".format(ocr_str)
+	print u"{}".format(ocr_str)
 	return ocr_str
 
 generate_classifier()
