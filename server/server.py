@@ -69,7 +69,11 @@ def show_data(char):
 	global fs
 	html = ""
 	for f in fs.find({'filename': '{}.jpg'.format(char)}):
-		html += "<img src='/image/{}' width=80 />".format(f.md5)
+		html += """
+		<a class="delete-img" data-target="{}" href="#">
+			<img src='/image/{}' width=80 />
+		</a>
+		""".format(f.md5, f.md5)
 	
 	if html == "":
 		html = "<h2>no data...</h2>"

@@ -157,6 +157,26 @@ $(function() {
 });
 
 $(function() {
+	$('a.delete-img').on('click', function() {
+		if(confirm('Are you sure to delete data?')) {
+			var url = "/delete/" + $(this).attr('data-target');
+			$.ajax({
+				type: 'GET',
+				url: url,
+				cache: false,
+				processData: false,
+				contentType: false,
+				success: function(data) {
+				}
+			});
+			$(this).remove();
+		}
+		return false;
+	});
+});
+
+/*
+$(function() {
 	var p = $('#progress');
 	p.progressbar({
 		value: 0,
@@ -176,3 +196,4 @@ $(function() {
 		if (v >= 100) { clearInterval(id) }
 	}, 100);
 });
+*/
