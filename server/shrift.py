@@ -8,6 +8,7 @@ import glob
 from PIL import Image
 import numpy as np
 from sklearn import datasets
+import matplotlib.pyplot as plt
 
 # TODO: paramter
 SIZE = 400	# 文字画像の縦横サイズ
@@ -169,6 +170,11 @@ def extract_characters(vector, threshold=None):
 			secs.append(sec)
 			sec = [-1, -1]
 	
+	# 小さすぎる山はノイズとして除去する
+	for (i, sec) in enumerate(secs):
+		if sec[1]-sec[0] < 3: # TODO: parameter
+			secs = np.delete(secs, i, axis=0)
+
 	result = []
 	# しきい値(threshold)を元に文字抽出リストを修正する
 	if not (threshold is None):
