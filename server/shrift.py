@@ -5,6 +5,7 @@ from config import *
 import os, sys, re, datetime
 import io
 import glob
+import json
 from PIL import Image
 import numpy as np
 from sklearn import datasets
@@ -14,6 +15,7 @@ import matplotlib.pyplot as plt
 SIZE = 400	# 文字画像の縦横サイズ
 SPLIT = 20	# 認識対象の縦横分割数
 SVMLIGHT_OUTPUT_PATH = os.path.join(os.path.dirname(__file__), 'data')
+params = {}
 
 label = [
 	'a', 'i', 'u', 'e', 'o',
@@ -45,7 +47,7 @@ clf = None
 def generate_classifier():
 	sys.stdout.write(" * Generating Classifier ... ")
 	from sklearn.ensemble import RandomForestClassifier
-	global clf
+	global clf, params
 	# 最新のsvmlightファイルを取得する
 	flist = glob.glob('data/feature_*')
 	flist.sort(
@@ -54,8 +56,7 @@ def generate_classifier():
 
 	try:
 		trainX, trainY = datasets.load_svmlight_file(flist[0], n_features=SPLIT**2)
-		# TODO: paramter
-		clf = RandomForestClassifier(n_estimators=585)
+		clf = RandomForestClassifier(n_estimators=params['classifier']['n_estimator'])
 		clf.fit(trainX.toarray(), trainY)
 		print("generated!")
 	except ValueError as e:
@@ -113,6 +114,7 @@ def generate_train_data():
 
 # スペクトルから特徴量の山を範囲のリストとして行を抽出する
 def extract_lines(vector):
+	global params
 	secs = []
 	sec = [-1, -1]
 	for (i, x) in enumerate(vector):
@@ -132,13 +134,13 @@ def extract_lines(vector):
 	
 	# 小さすぎる山はノイズとして除去する
 	secs = np.array(secs)
-	secs = secs[secs.T[1] - secs.T[0] > 3] # TODO: parameter
+	secs = secs[secs.T[1] - secs.T[0] > params['noise_pixel_size']]
 	secs = secs.tolist()
 
 	heights = np.array(map(lambda s: s[1]-s[0], secs))
 	# 「う」のような文字の行スペクトルを見ると2文字に
 	# 分離してしまうので、行高の小さい行に対して補正をかける
-	while heights.max() > heights.min() * 3: # TODO: parameter
+	while heights.max() * params['character_size']['vertical'] > heights.min():
 		min_i = np.argmin(heights)
 		if min_i < len(secs) - 1:
 			# 「う」「え」「ら」等の抽出に対応
@@ -158,6 +160,7 @@ def extract_lines(vector):
 # スペクトルから特徴量の山を範囲のリストとして文字を抽出する
 # * threshold 
 def extract_characters(vector, threshold=None):
+	global params
 	secs = []
 	sec = [-1, -1]
 	for (i, x) in enumerate(vector):
@@ -177,31 +180,31 @@ def extract_characters(vector, threshold=None):
 	
 	# 小さすぎる山はノイズとして除去する
 	secs = np.array(secs)
-	secs = secs[secs.T[1] - secs.T[0] > 3] # TODO: parameter
+	secs = secs[secs.T[1] - secs.T[0] > params['character_size']['vertical']]
 	secs = secs.tolist()
 
 	result = []
 	# しきい値(threshold)を元に文字抽出リストを修正する
 	if not (threshold is None):
 		result.append([])
-		# TODO: parameter
 		# x < ts*0.05			-> -1(ノイズ)
 		# ts*0.05 < x < ts*0.15	-> 0(濁点、半濁点など)
 		# ts*0.15 < x < ts*0.6	-> 1(「い」「け」等の縦棒)
 		# ts*0.6 < x			-> 2(通常の文字)
+		ratio = params['character_size']
 		ts = [
-				2 if (s[1]-s[0]) > threshold*0.6
+				2 if (s[1]-s[0]) > threshold*ratio['medium']
 				else
-					-1 if (s[1]-s[0]) < threshold*0.05
+					-1 if (s[1]-s[0]) < threshold*ratio['noise']
 					else
-						0 if (s[1]-s[0]) < threshold*0.15
+						0 if (s[1]-s[0]) < threshold*ratio['small']
 						else 1
 				for s in secs]
 		# ノイズの除去
 		ts = np.array(ts)
 		ts = ts[ts != -1]
 		secs = np.array(secs)
-		secs = secs[secs.T[1] - secs.T[0] >= threshold*0.05]
+		secs = secs[secs.T[1] - secs.T[0] >= threshold*ratio['noise']]
 		secs = secs.tolist()
 		print ts
 
@@ -253,6 +256,7 @@ def scale(matrix):
 # @return: ([文字の生データ], [小文字])の想定されうるパターンのリスト
 #	-> 行ごとのリストになっている
 def chars(filename):
+	global params
 	im = Image.open(filename).convert("L").resize((SIZE, SIZE))
 	im = np.asarray(im.point(lambda x: 1 - x/255.))
 	datas = []	# 各文字の生データ
@@ -274,8 +278,7 @@ def chars(filename):
 				char = sub.T[s[0]:s[1]].T
 				v = extract_characters(map(lambda x: np.mean(x), char))
 				# 行の高さと文字の高さを比較して小文字判定する
-				# TODO: parameter
-				if len(v) == 1 and (v[0][1]-v[0][0]) < height*0.6:
+				if len(v) == 1 and (v[0][1]-v[0][0]) < height*params['character_size']['medium']:
 					small.append(True)
 				else:
 					small.append(False)
@@ -334,6 +337,8 @@ def ocr(filename):
 	print u"{}".format(ocr_str)
 	return ocr_str
 
+with open('data/param.json', 'r') as f:
+	params = json.load(f)
 generate_classifier()
 
 if __name__ == "__main__":
