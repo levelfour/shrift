@@ -129,6 +129,11 @@ def extract_lines(vector):
 			sec[1] = i
 			secs.append(sec)
 			sec = [-1, -1]
+	
+	# 小さすぎる山はノイズとして除去する
+	secs = np.array(secs)
+	secs = secs[secs.T[1] - secs.T[0] > 3] # TODO: parameter
+	secs = secs.tolist()
 
 	heights = np.array(map(lambda s: s[1]-s[0], secs))
 	# 「う」のような文字の行スペクトルを見ると2文字に
@@ -171,9 +176,9 @@ def extract_characters(vector, threshold=None):
 			sec = [-1, -1]
 	
 	# 小さすぎる山はノイズとして除去する
-	for (i, sec) in enumerate(secs):
-		if sec[1]-sec[0] < 3: # TODO: parameter
-			secs = np.delete(secs, i, axis=0)
+	secs = np.array(secs)
+	secs = secs[secs.T[1] - secs.T[0] > 3] # TODO: parameter
+	secs = secs.tolist()
 
 	result = []
 	# しきい値(threshold)を元に文字抽出リストを修正する
@@ -193,11 +198,13 @@ def extract_characters(vector, threshold=None):
 						else 1
 				for s in secs]
 		# ノイズの除去
-		for (i, s) in enumerate(ts):
-			if s == -1:
-				ts = np.delete(ts, i, axis=0)
-				secs = np.delete(secs, i, axis=0)
+		ts = np.array(ts)
+		ts = ts[ts != -1]
+		secs = np.array(secs)
+		secs = secs[secs.T[1] - secs.T[0] >= threshold*0.05]
+		secs = secs.tolist()
 		print ts
+
 		# 行データから尤もらしい文字の抽出の仕方を返す再帰関数
 		def gen_data(i):
 			if i == len(ts):
