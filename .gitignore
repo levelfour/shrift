@@ -10,3 +10,5 @@
 /server/build
 *.c
 *.so
+*.pdf
+/doc/Makefile
