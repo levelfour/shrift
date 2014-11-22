@@ -156,4 +156,4 @@ def clear():
 	return result 
 
 if __name__ == '__main__':
-	app.run(debug=True, host=socket.gethostbyname(socket.gethostname()))
+	app.run(debug=True, host=socket.gethostbyname(socket.gethostname()), port=int(sys.argv[1]))
