@@ -118,10 +118,17 @@ def make_canvas():
 @app.route('/ocr', methods=['POST'])
 def upload_file():
 	if request.method == 'POST':
-		file = request.files['file']
-		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_DIR'], filename))
+		f1 = request.files['file']
+		if f1 and allowed_file(f1.filename):
+			filename = secure_filename(f1.filename)
+			now = datetime.datetime.today()
+			f1.save(os.path.join(app.config['UPLOAD_DIR'], filename))
+			shutil.copyfile(
+				os.path.join(app.config['UPLOAD_DIR'], filename),
+				os.path.join(app.config['UPLOAD_DIR'], 
+				'data_{}{:0>2}{:0>2}{:0>2}{:0>2}.jpg'.format(
+					now.year, now.month, now.day, now.hour, now.minute)
+				))
 			import shrift
 			return shrift.ocr(secure_filename(filename))
 
@@ -156,4 +163,7 @@ def clear():
 	return result 
 
 if __name__ == '__main__':
-	app.run(debug=True, host=socket.gethostbyname(socket.gethostname()), port=int(sys.argv[1]))
+	port = 5000
+	if len(sys.argv) > 1:
+		port = int(sys.argv[1])
+	app.run(debug=True, host=socket.gethostbyname(socket.gethostname()), port=port)
