@@ -1,0 +1,12 @@
+{
+	"classifier": {
+		"n_estimator": 485
+	},
+	"noise_pixel_size": 3,
+	"character_size": {
+		"vertical": 0.6,
+		"noise": 0.05,
+		"small": 0.15,
+		"medium": 0.6
+	}
+}
