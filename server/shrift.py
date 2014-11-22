@@ -9,7 +9,6 @@ import json
 from PIL import Image
 import numpy as np
 from sklearn import datasets
-import matplotlib.pyplot as plt
 
 # TODO: paramter
 SIZE = 400	# 文字画像の縦横サイズ
