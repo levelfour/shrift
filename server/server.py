@@ -126,8 +126,8 @@ def upload_file():
 			shutil.copyfile(
 				os.path.join(app.config['UPLOAD_DIR'], filename),
 				os.path.join(app.config['UPLOAD_DIR'], 
-				'data_{}{:0>2}{:0>2}{:0>2}{:0>2}.jpg'.format(
-					now.year, now.month, now.day, now.hour, now.minute)
+					'data_{}{:0>2}{:0>2}{:0>2}{:0>2}{:0>2}.jpg'.format(
+					now.year, now.month, now.day, now.hour, now.minute, now.second)
 				))
 			import shrift
 			return shrift.ocr(secure_filename(filename))
