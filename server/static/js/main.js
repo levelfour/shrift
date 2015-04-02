@@ -126,7 +126,7 @@ $(function() {
 			return false;
 		});
 		
-		$('#pen').on('click', function() {
+		$('#pen').on('touchend mouseup', function() {
 			set_pencil(context);
 			$('#pen').css('opacity', '1');
 			$('#erase').css('opacity', '0.3');
@@ -134,7 +134,7 @@ $(function() {
 			return false;
 		});
 		
-		$('#erase').on('click', function() {
+		$('#erase').on('touchend mouseup', function() {
 			set_eraser(context);
 			$('#pen').css('opacity', '0.3');
 			$('#erase').css('opacity', '1');

@@ -29,6 +29,10 @@ div.contents {
 	width: 60px;
 }
 
+.icon:active {
+	background-color: #666;
+}
+
 #pen   { opacity: 1.0 }
 #erase { opacity: 0.3 }
 #undo  { opacity: 0.3 }
@@ -61,6 +65,10 @@ div#shrift {
 	text-align: center;
 	line-height: 160px;
 	opacity: 1;
+}
+
+div#shrift * {
+	vertical-align: middle;
 }
 
 div#shrift:active {
