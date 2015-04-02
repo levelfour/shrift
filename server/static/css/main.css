@@ -51,7 +51,7 @@ canvas#canvas {
 }
 
 div#shrift {
-	-webkit-transition: opacity 1s linear;
+	-webkit-transition: opacity 0.5s linear;
 	transition: opacity 1s linear;
 	position: absolute;
 	bottom: 100px;

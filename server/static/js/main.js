@@ -108,8 +108,10 @@ $(function() {
 			'mouseup mouseleave touchend': function() {
 				drawing = false;
 				setTimeout(function () {
-					$('#shrift').removeClass('transparent');
-				}, 3000);
+					if(!drawing) {
+						$('#shrift').removeClass('transparent');
+					}
+				}, 500);
 			}
 		});
 
@@ -142,19 +144,19 @@ $(function() {
 			return false;
 		});
 		
-		$('#delete').on('click', function() {
+		$('#delete').on('touchend mouseup', function() {
 			if(confirm('Are you sure to clear canvas?')) {
 				clear(context, canvas);
 			}
 			return false;
 		});
 
-		$('#clear').on('click', function() {
+		$('#clear').on('touchend mouseup', function() {
 			clear(context, canvas);
 			return false;
 		});
 		
-		$('#shrift').on('click', function() {
+		$('#shrift').on('touchend mouseup', function() {
 			$(this).addClass('hover');
 			send_image(canvas, '/ocr', 'shrift');
 			return false;
