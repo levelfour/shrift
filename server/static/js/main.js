@@ -76,10 +76,12 @@ $(function() {
 			'mousedown': function(e) {
 				drawing = true;
 				pos = get_pos(e);
+				$('#shrift').addClass('transparent');
 			},
 			'touchstart': function(e) {
 				drawing = true;
 				pos = get_tablet_pos(e);
+				$('#shrift').addClass('transparent');
 			},
 			'mousemove': function(e) {
 				var current_pos = get_pos(e);
@@ -103,9 +105,12 @@ $(function() {
 					pos = current_pos;
 				}
 			},
-			'mouseup': function() { drawing = false; },
-			'mouseleave': function() { drawing = false; },
-			'touchend': function() { drawing = false; }
+			'mouseup mouseleave touchend': function() {
+				drawing = false;
+				setTimeout(function () {
+					$('#shrift').removeClass('transparent');
+				}, 3000);
+			}
 		});
 
 		$('#send').on('click', function() {
@@ -150,9 +155,12 @@ $(function() {
 		});
 		
 		$('#shrift').on('click', function() {
+			$(this).addClass('hover');
 			send_image(canvas, '/ocr', 'shrift');
 			return false;
 		});
+
+		$('#shrift').removeClass('transparent');
 	}
 });
 

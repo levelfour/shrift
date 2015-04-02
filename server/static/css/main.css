@@ -1,3 +1,9 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
 * {
 	-webkit-user-select: none;
 }
@@ -37,3 +43,27 @@ canvas#canvas {
 	box-shadow: 8px 8px 5px;
 }
 
+div#shrift {
+	-webkit-transition: opacity 1s linear;
+	transition: opacity 1s linear;
+	position: absolute;
+	bottom: 100px;
+	right: 100px;
+	width: 160px;
+	height: 160px;
+	background-color: #aaa;
+	color: #fff;
+	font-size: 30px;
+	border-radius: 80px;
+	text-align: center;
+	line-height: 160px;
+	opacity: 1;
+}
+
+div#shrift:active {
+	background-color: #666;
+}
+
+div#shrift.transparent {
+	opacity: 0;
+}
