@@ -9,13 +9,16 @@ body {
 }
 
 body {
-	padding-top: 60px;
+	margin: 0;
 	background: linear-gradient(#bbb, #444);
 	height: 1400px;
 }
 
 div.header {
+	height: 60px;
+	margin-bottom: 10px;
 	padding: 3px;
+	background-color: #f0f0f0;
 }
 
 div.contents {
@@ -23,7 +26,7 @@ div.contents {
 }
 
 .icon {
-	width: 40px;
+	width: 60px;
 }
 
 #pen   { opacity: 1.0 }

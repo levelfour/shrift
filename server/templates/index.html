@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Shrift OCR Engine</title>
-    <link href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
     <link rel="icon" type="image/vnd.microsoft.icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
@@ -16,20 +14,16 @@
     </style>
   </head>
   <body>
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="header">
-        <div class="navbar-header">
-		<!--
-          <a id="shrift" href="#"><img class='icon' src="{{ url_for('static', filename='img/icon.png') }}" /></a>
-          <a id="save" href="#"><img class='icon' src="{{ url_for('static', filename='img/new.png') }}" /></a>
-		-->
-          <a id="pen" href="#"><img class='icon' src="{{ url_for('static', filename='img/pen.png') }}" /></a>
-          <a id="erase" href="#"><img class='icon' src="{{ url_for('static', filename='img/eraser.png') }}" /></a>
-          <a id="undo" href="#"><img class='icon' src="{{ url_for('static', filename='img/undo.png') }}" /></a>
-          <a id="redo" href="#"><img class='icon' src="{{ url_for('static', filename='img/redo.png') }}" /></a>
-          <a id="delete" href="#"><img class='icon' src="{{ url_for('static', filename='img/trash.png') }}" /></a>
-        </div>
-      </div>
+    <div class="header">
+	  <!--
+      <a id="shrift" href="#"><img class='icon' src="{{ url_for('static', filename='img/icon.png') }}" /></a>
+      <a id="save" href="#"><img class='icon' src="{{ url_for('static', filename='img/new.png') }}" /></a>
+	  -->
+      <a id="pen" href="#"><img class='icon' src="{{ url_for('static', filename='img/pen.png') }}" /></a>
+      <a id="erase" href="#"><img class='icon' src="{{ url_for('static', filename='img/eraser.png') }}" /></a>
+      <a id="undo" href="#"><img class='icon' src="{{ url_for('static', filename='img/undo.png') }}" /></a>
+      <a id="redo" href="#"><img class='icon' src="{{ url_for('static', filename='img/redo.png') }}" /></a>
+      <a id="delete" href="#"><img class='icon' src="{{ url_for('static', filename='img/trash.png') }}" /></a>
     </div>
 
     <div class='container contents'>
