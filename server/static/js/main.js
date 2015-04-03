@@ -193,7 +193,6 @@ $(function() {
 		});
 		
 		$('#shrift').on('mouseup', function() {
-			$(this).addClass('hover');
 			send_image(canvas, '/ocr', 'shrift');
 			return false;
 		});
