@@ -166,33 +166,33 @@ $(function() {
 			return false;
 		});
 		
-		$('#pen').on('touchend mouseup', function() {
+		$('#pen').on('mouseup', function() {
 			set_pencil(context);
 			$('#pen').css('opacity', '1');
 			$('#erase').css('opacity', '0.3');
 			return false;
 		});
 		
-		$('#erase').on('touchend mouseup', function() {
+		$('#erase').on('mouseup', function() {
 			set_eraser(context);
 			$('#pen').css('opacity', '0.3');
 			$('#erase').css('opacity', '1');
 			return false;
 		});
 		
-		$('#delete').on('touchend mouseup', function() {
+		$('#delete').on('mouseup', function() {
 			if(confirm('Are you sure to clear canvas?')) {
 				clear(context, canvas);
 			}
 			return false;
 		});
 
-		$('#clear').on('touchend mouseup', function() {
+		$('#clear').on('mouseup', function() {
 			clear(context, canvas);
 			return false;
 		});
 		
-		$('#shrift').on('touchend mouseup', function() {
+		$('#shrift').on('mouseup', function() {
 			$(this).addClass('hover');
 			send_image(canvas, '/ocr', 'shrift');
 			return false;
