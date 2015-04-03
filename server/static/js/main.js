@@ -77,11 +77,31 @@ $(function() {
 				drawing = true;
 				pos = get_pos(e);
 				$('#shrift').addClass('transparent');
+				if($('#erase').css('opacity') == 1) {
+					erasing = true;
+				}
+				if(erasing) {
+					$('#eraser').css({
+						display: 'block',
+						top: pos.y,
+						left: pos.x
+					});
+				}
 			},
 			'touchstart': function(e) {
 				drawing = true;
 				pos = get_tablet_pos(e);
 				$('#shrift').addClass('transparent');
+				if($('#erase').css('opacity') == 1) {
+					erasing = true;
+				}
+				if(erasing) {
+					$('#eraser').css({
+						display: 'block',
+						top: pos.y,
+						left: pos.x
+					});
+				}
 			},
 			'mousemove': function(e) {
 				var current_pos = get_pos(e);
@@ -92,6 +112,12 @@ $(function() {
 					context.stroke();
 					context.closePath();
 					pos = current_pos;
+				}
+				if(erasing) {
+					$('#eraser').css({
+						top: current_pos.y,
+						left: current_pos.x
+					});
 				}
 			},
 			'touchmove': function(e) {
@@ -104,14 +130,26 @@ $(function() {
 					context.closePath();
 					pos = current_pos;
 				}
+				if(erasing) {
+					$('#eraser').css({
+						top: current_pos.y,
+						left: current_pos.x
+					});
+				}
 			},
-			'mouseup mouseleave touchend': function() {
+			'mouseup touchend': function() {
 				drawing = false;
 				setTimeout(function () {
 					if(!drawing) {
 						$('#shrift').removeClass('transparent');
 					}
 				}, 500);
+				if(erasing) {
+					$('#eraser').css('display', 'none');
+				}
+				if($('#erase').css('opacity') == 1) {
+					erasing = false;
+				}
 			}
 		});
 
@@ -132,7 +170,6 @@ $(function() {
 			set_pencil(context);
 			$('#pen').css('opacity', '1');
 			$('#erase').css('opacity', '0.3');
-			erasing = false;
 			return false;
 		});
 		
@@ -140,7 +177,6 @@ $(function() {
 			set_eraser(context);
 			$('#pen').css('opacity', '0.3');
 			$('#erase').css('opacity', '1');
-			erasing = true;
 			return false;
 		});
 		

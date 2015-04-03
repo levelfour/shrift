@@ -48,6 +48,7 @@ canvas#canvas {
 	border: solid 1px #888;
 	border-radius: 10px;
 	box-shadow: 8px 8px 5px;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 div#shrift {
@@ -77,4 +78,14 @@ div#shrift:active {
 
 div#shrift.transparent {
 	opacity: 0;
+}
+
+div#eraser {
+	position: absolute;
+	display: none;
+	width: 50px;
+	height: 50px;
+	background-color: #f8f8f8;
+	border: #888 1px solid;
+	border-radius: 25px;
 }
