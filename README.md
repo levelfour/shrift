@@ -7,6 +7,12 @@ Server-side program is written with Python and MongoDB, and client application i
 Today, deep learning will become new fields not only in machine learning, but in whole IT.
 This project is meant to utilize machine learning (also deep learning) to realize OCR engine for Japanese.
 
+## Dependencies
+
+```sh
+pip install -r .install.txt
+```
+
 ## Task
 ### improve precision
 - [ ] better character extraction algorithm
